@@ -3,7 +3,6 @@ import { Context, Telegraf } from 'telegraf';
 import { PrismaService } from '../prisma.service';
 import { LoggerService } from '../services/logger.service';
 import { LogViewerService } from '../services/log-viewer.service';
-import { I18nService } from 'nestjs-i18n';
 import { I18nTranslateService } from 'src/i18n/i18n.service';
 import { BotButtons } from './bot.buttons';
 
@@ -22,7 +21,7 @@ export class BotUpdate {
     const { id, first_name, last_name, username, language_code } = ctx.from;
 
     try {
-      const user =  await this.prisma.user.upsert({
+      const user = await this.prisma.user.upsert({
         where: {
           telegramId: id.toString(),
         },
@@ -121,5 +120,4 @@ export class BotUpdate {
       return 'Не удалось получить список ошибок';
     }
   }
-  
 }

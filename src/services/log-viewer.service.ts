@@ -23,8 +23,8 @@ export class LogViewerService {
         action: true,
         details: true,
         error: true,
-        createdAt: true
-      }
+        createdAt: true,
+      },
     });
 
     return logs;
@@ -33,7 +33,7 @@ export class LogViewerService {
   async getLastErrors(telegramId: string, limit = 5) {
     const user = await this.prisma.user.findUnique({
       where: { telegramId },
-      select: { id: true }
+      select: { id: true },
     });
 
     if (!user) {
@@ -43,10 +43,10 @@ export class LogViewerService {
     return this.prisma.userLog.findMany({
       where: {
         userId: user.id,
-        error: { not: null }
+        error: { not: null },
       },
       orderBy: { createdAt: 'desc' },
-      take: limit
+      take: limit,
     });
   }
-} 
+}
