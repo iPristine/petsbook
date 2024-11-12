@@ -19,4 +19,15 @@ export enum BotScenes {
   PET_ADD = 'pet-add',
   DELETE_PET = 'delete-pet',
   DELETE_PET_CONFIRM = 'delete-pet-confirm',
+
+  REMINDERS_LIST = 'reminders-list',
+  ADD_REMINDER_TITLE = 'add-reminder-title',
+  ADD_REMINDER_DESCRIPTION = 'add-reminder-description',
+  ADD_REMINDER_DATE = 'add-reminder-date',
+  ADD_REMINDER_FREQUENCY = 'add-reminder-frequency',
+  ADD_REMINDER_NOTIFY = 'add-reminder-notify',
+  ADD_REMINDER_PETS = 'add-reminder-pets',
+  ADD_REMINDER_CONFIRM = 'add-reminder-confirm',
+  REMINDER_DETAILS = 'reminder-details',
+  EDIT_REMINDER = 'edit-reminder',
 }
