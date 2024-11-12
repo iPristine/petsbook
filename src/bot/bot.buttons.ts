@@ -22,6 +22,31 @@ export class BotButtons {
     ]);
   }
 
+  static mainMenu() {
+    return Markup.inlineKeyboard([
+      [Markup.button.callback('My Profile', 'my-profile')],
+      [Markup.button.callback('My Pets', 'my-pets')],
+      [Markup.button.callback('Remainders', 'remainders')],
+      [Markup.button.callback('Settings', 'settings')],
+    ]);
+  }
+
+  static myProfile() {
+    return Markup.inlineKeyboard([[Markup.button.callback('Back', 'back')]]);
+  }
+
+  static myPets() {
+    return Markup.inlineKeyboard([[Markup.button.callback('Back', 'back')]]);
+  }
+
+  static remainders() {
+    return Markup.inlineKeyboard([[Markup.button.callback('Back', 'back')]]);
+  }
+
+  static settings() {
+    return Markup.inlineKeyboard([[Markup.button.callback('Back', 'back')]]);
+  }
+
   static showCommandsMenu(button_commands: ButtonsLocalNames[]) {
     return Markup.inlineKeyboard(
       [

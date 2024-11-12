@@ -5,6 +5,7 @@ import { LoggerService } from '../services/logger.service';
 import { LogViewerService } from '../services/log-viewer.service';
 import { I18nTranslateService } from 'src/i18n/i18n.service';
 import { BotButtons } from './bot.buttons';
+import { BotScenes } from './scenes/types';
 
 @Update()
 export class BotUpdate {
@@ -44,8 +45,9 @@ export class BotUpdate {
         action: 'START_COMMAND',
         details: `User registered/updated: ${first_name} (${username || 'no username'})`,
       });
+      await ctx.reply(await this.i18n.getWelcome(user));
 
-      return this.i18n.getWelcome(user);
+      await ctx['scene'].enter(BotScenes.MAIN_MENU);
     } catch (error) {
       await this.logger.logUserAction({
         telegramId: id.toString(),
@@ -70,11 +72,23 @@ export class BotUpdate {
   @Command('lang')
   async getBotLanguage(@Ctx() ctx: Context) {
     await ctx.deleteMessage();
-    await ctx['scene'].enter('lang');
+    await ctx['scene'].enter(BotScenes.LANGUAGE);
     await ctx.reply(
       await this.i18n.getChooseLanguage(ctx['session']['language']),
       BotButtons.chooseLanguage(),
     );
+  }
+
+  @Command('main')
+  async getMainMenu(@Ctx() ctx: Context) {
+    await ctx.deleteMessage();
+    await ctx['scene'].enter(BotScenes.MAIN_MENU);
+  }
+
+  @Command('my-profile')
+  async getMyProfile(@Ctx() ctx: Context) {
+    await ctx.deleteMessage();
+    await ctx['scene'].enter(BotScenes.MAIN_MENU);
   }
 
   @Command('logs')

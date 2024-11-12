@@ -4,8 +4,9 @@ import { BotButtons } from '../bot.buttons';
 import { I18nTranslateService } from '../../i18n/i18n.service';
 
 const LANG_TYPES = ['ru', 'en'];
+import { BotScenes } from './types';
 
-@Scene('lang')
+@Scene(BotScenes.LANGUAGE)
 export class BotLanguage {
   constructor(private i18n: I18nTranslateService) {
     this.i18n = i18n;

@@ -9,7 +9,11 @@ import { TelegrafModule } from 'nestjs-telegraf';
 import { I18nTranslateModule } from 'src/i18n/i18n.module';
 import { I18nTranslateService } from 'src/i18n/i18n.service';
 import { BotLanguage } from './scenes/bot-language';
-
+import { MainMenu } from './scenes/main-menu';
+import { MyProfile } from './scenes/my-profile';
+import { MyPets } from './scenes/my-pets';
+import { Settings } from './scenes/settings';
+import { Remainers } from './scenes/remainers';
 const sessions = new LocalSession({ database: 'session.json' });
 
 @Module({
@@ -29,6 +33,11 @@ const sessions = new LocalSession({ database: 'session.json' });
     LogViewerService,
     I18nTranslateService,
     BotLanguage,
+    MainMenu,
+    MyProfile,
+    MyPets,
+    Settings,
+    Remainers,
   ],
 })
 export class BotModule {}

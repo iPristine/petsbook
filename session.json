@@ -3,8 +3,11 @@
     {
       "id": "211870571:211870571",
       "data": {
-        "__scenes": {},
-        "language": "en"
+        "__scenes": {
+          "current": "my-profile",
+          "state": {}
+        },
+        "language": "my-profile"
       }
     }
   ]
