@@ -3,16 +3,32 @@ import { Context } from 'telegraf';
 import { BotButtons } from '../bot.buttons';
 import { I18nTranslateService } from '../../i18n/i18n.service';
 import { BotScenes } from './types';
+import { UserService } from 'src/user/user.service';
 
 @Scene(BotScenes.MY_PROFILE)
 export class MyProfile {
-  constructor(private i18n: I18nTranslateService) {
-    this.i18n = i18n;
-  }
+  constructor(
+    private i18n: I18nTranslateService,
+    private userService: UserService,
+  ) {}
 
   @SceneEnter()
   async enterMyProfile(@Ctx() ctx: Context) {
-    await ctx.reply('My Profile:', BotButtons.myProfile());
+    try {
+      const user = await this.userService.findOne(ctx.from.id);
+      const message = [
+        `👤 Имя: ${user.firstName}`,
+        user.lastName ? `Фамилия: ${user.lastName}` : null,
+        user.username ? `Username: @${user.username}` : null,
+        `🌐 Язык: ${user.lang || 'не установлен'}`,
+        `📅 Дата регистрации: ${user.createdAt.toLocaleDateString()}`,
+      ]
+        .filter(Boolean)
+        .join('\n');
+      await ctx.reply(message, BotButtons.myProfile());
+    } catch (error) {
+      await ctx.reply('Произошла ошибка при получении данных пользователя');
+    }
   }
 
   @Action('back')

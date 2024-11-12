@@ -7,7 +7,13 @@
           "current": "my-profile",
           "state": {}
         },
-        "language": "my-profile"
+        "language": "my-profile",
+        "petName": "Ластюша",
+        "petGender": "female",
+        "petType": "dog",
+        "petAge": 9,
+        "currentPetId": "cm3eqv25f0003e683ph5r6p68",
+        "editField": "age"
       }
     }
   ]

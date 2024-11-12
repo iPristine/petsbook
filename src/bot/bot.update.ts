@@ -6,6 +6,7 @@ import { LogViewerService } from '../services/log-viewer.service';
 import { I18nTranslateService } from 'src/i18n/i18n.service';
 import { BotButtons } from './bot.buttons';
 import { BotScenes } from './scenes/types';
+import { UserService } from 'src/user/user.service';
 
 @Update()
 export class BotUpdate {
@@ -14,6 +15,7 @@ export class BotUpdate {
     private logger: LoggerService,
     private logViewer: LogViewerService,
     private i18n: I18nTranslateService,
+    private userService: UserService,
     @InjectBot() private bot: Telegraf<Context>,
   ) {}
 
@@ -22,22 +24,12 @@ export class BotUpdate {
     const { id, first_name, last_name, username, language_code } = ctx.from;
 
     try {
-      const user = await this.prisma.user.upsert({
-        where: {
-          telegramId: id.toString(),
-        },
-        update: {
-          firstName: first_name,
-          lastName: last_name || null,
-          username: username || null,
-          lang: language_code,
-        },
-        create: {
-          telegramId: id.toString(),
-          firstName: first_name,
-          lastName: last_name || null,
-          username: username || null,
-        },
+      const user = await this.userService.createOrUpdate({
+        telegramId: id,
+        firstName: first_name,
+        lastName: last_name,
+        username: username,
+        lang: language_code,
       });
 
       await this.logger.logUserAction({
