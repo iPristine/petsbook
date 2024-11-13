@@ -16,10 +16,8 @@ export class BotLanguage {
     await ctx.deleteMessage();
     ctx['session']['language'] = ctx.callbackQuery['data'];
     const language = ctx['session']['language'];
-    await ctx.reply(
-      await this.i18n.getChooseCommands(language),
-      BotButtons.startupButtons(await this.i18n.startupButtons(language)),
-    );
+    await ctx.reply(await this.i18n.getChooseCommands(language));
     await ctx['scene'].leave();
+    await ctx['scene'].enter(BotScenes.MAIN_MENU);
   }
 }

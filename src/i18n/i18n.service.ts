@@ -22,19 +22,6 @@ export class I18nTranslateService {
     return await this.i18nService.t('main.CHOOSE_OPT', { lang });
   }
 
-  async startupButtons(lang: string): Promise<ButtonsLocalNames[]> {
-    return [
-      await this.i18nService.t('buttons.main_keyboard.BUDGET', {
-        lang,
-      }),
-      await this.i18nService.t('buttons.main_keyboard.EXPENSES', {
-        lang,
-      }),
-      await this.i18nService.t('buttons.main_keyboard.CURRENCIES_SUM', {
-        lang,
-      }),
-    ];
-  }
 
   async getChooseLanguage(lang: string): Promise<string> {
     return await this.i18nService.t('main.CHOOSE_LANG', { lang });

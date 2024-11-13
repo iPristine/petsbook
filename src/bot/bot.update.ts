@@ -52,16 +52,6 @@ export class BotUpdate {
     }
   }
 
-  @Command('commands')
-  async getBotCommands(@Ctx() ctx: Context) {
-    await ctx.replyWithHTML(
-      await this.i18n.getChooseCommands(ctx['session']['language']),
-      BotButtons.startupButtons(
-        await this.i18n.startupButtons(ctx['session']['language']),
-      ),
-    );
-  }
-
   @Command('lang')
   async getBotLanguage(@Ctx() ctx: Context) {
     await ctx.deleteMessage();
