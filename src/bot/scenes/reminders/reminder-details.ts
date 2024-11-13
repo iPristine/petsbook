@@ -33,9 +33,10 @@ export class ReminderDetails {
       7: 'За неделю до',
     }[reminder.notifyDays];
 
-    const petsInfo = reminder.pets.length > 0
-      ? `🐾 Питомцы: ${reminder.pets.map(p => p.pet.name).join(', ')}`
-      : '🌐 Общее напоминание';
+    const petsInfo =
+      reminder.pets.length > 0
+        ? `🐾 Питомцы: ${reminder.pets.map((p) => p.pet.name).join(', ')}`
+        : '🌐 Общее напоминание';
 
     const message = [
       `📝 ${reminder.title}`,
@@ -66,4 +67,4 @@ export class ReminderDetails {
     await ctx.answerCbQuery();
     await ctx['scene'].enter(BotScenes.REMINDERS_LIST);
   }
-} 
+}

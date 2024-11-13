@@ -33,4 +33,4 @@ export class EditReminderDescription {
 
     await ctx['scene'].enter(BotScenes.REMINDER_DETAILS);
   }
-} 
+}

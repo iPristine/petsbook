@@ -2,7 +2,6 @@ import { Action, Ctx, Scene, SceneEnter } from 'nestjs-telegraf';
 import { Context, Markup } from 'telegraf';
 import { BotScenes } from '../types';
 import { RemindersService } from '../../../reminders/reminders.service';
-import { ReminderButtons } from './reminder.buttons';
 
 @Scene(BotScenes.DELETE_REMINDER_CONFIRM)
 export class DeleteReminderConfirm {
@@ -55,4 +54,4 @@ export class DeleteReminderConfirm {
 
     await ctx['scene'].enter(BotScenes.REMINDERS_LIST);
   }
-} 
+}

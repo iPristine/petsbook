@@ -22,7 +22,9 @@ export class EditReminderNotify {
     const reminderId = ctx['session']['currentReminderId'];
 
     try {
-      await this.remindersService.updateReminder(reminderId, { notifyDays: days });
+      await this.remindersService.updateReminder(reminderId, {
+        notifyDays: days,
+      });
       await ctx.reply('✅ Время уведомления успешно обновлено');
     } catch (error) {
       await ctx.reply('❌ Произошла ошибка при обновлении времени уведомления');
@@ -30,4 +32,4 @@ export class EditReminderNotify {
 
     await ctx['scene'].enter(BotScenes.REMINDER_DETAILS);
   }
-} 
+}

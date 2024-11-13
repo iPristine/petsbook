@@ -39,4 +39,4 @@ export class EditReminder {
     await ctx.answerCbQuery();
     await ctx['scene'].enter(BotScenes.REMINDER_DETAILS);
   }
-} 
+}

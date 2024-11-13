@@ -4,7 +4,7 @@
       "id": "211870571:211870571",
       "data": {
         "__scenes": {
-          "current": "reminders-list",
+          "current": "main-menu",
           "state": {}
         },
         "language": "remainders",
@@ -14,12 +14,14 @@
         "petAge": 9,
         "currentPetId": "cm3eqv25f0003e683ph5r6p68",
         "editField": "age",
-        "reminderPets": [],
-        "reminderDescription": "Записаться к ветеринару",
-        "reminderDate": "2024-12-11T21:00:00.000Z",
+        "reminderPets": [
+          "cm3esl34l000339n2t9ux9i9m"
+        ],
+        "reminderDescription": "Забрать ластю",
+        "reminderDate": "2024-11-13T21:00:00.000Z",
         "reminderFrequency": "once",
-        "reminderNotifyDays": 0,
-        "currentReminderId": "cm3fn558i0004wmzwuwpa90rn"
+        "reminderNotifyDays": 1,
+        "currentReminderId": "cm3fnkmko0001149s87yyvfkc"
       }
     }
   ]

@@ -30,4 +30,4 @@ export class EditReminderFrequency {
 
     await ctx['scene'].enter(BotScenes.REMINDER_DETAILS);
   }
-} 
+}
