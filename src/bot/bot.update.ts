@@ -1,20 +1,21 @@
 import { Update, Start, Ctx, Command, InjectBot } from 'nestjs-telegraf';
 import { Context, Telegraf } from 'telegraf';
-import { PrismaService } from '../prisma.service';
 import { LoggerService } from '../services/logger.service';
 import { LogViewerService } from '../services/log-viewer.service';
 import { I18nTranslateService } from 'src/i18n/i18n.service';
 import { BotButtons } from './bot.buttons';
 import { BotScenes } from './scenes/types';
 import { UserService } from 'src/user/user.service';
+import { I18nTranslations } from 'src/i18n/generated/i18n.generated';
+import { I18nService } from 'nestjs-i18n';
 
 @Update()
 export class BotUpdate {
   constructor(
-    private prisma: PrismaService,
     private logger: LoggerService,
     private logViewer: LogViewerService,
     private i18n: I18nTranslateService,
+    private readonly i18nService: I18nService<I18nTranslations>,
     private userService: UserService,
     @InjectBot() private bot: Telegraf<Context>,
   ) {}

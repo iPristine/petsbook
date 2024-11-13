@@ -106,4 +106,17 @@ export class RemindersService {
       where: { id: reminderId },
     });
   }
+
+  async getReminderById(id: number) {
+    return this.prisma.reminder.findUnique({
+      where: { id: id.toString() },
+      include: {
+        pets: {
+          include: {
+            pet: true,
+          },
+        },
+      },
+    });
+  }
 }

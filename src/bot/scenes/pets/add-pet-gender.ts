@@ -2,7 +2,7 @@ import { Action, Ctx, Scene, SceneEnter } from 'nestjs-telegraf';
 import { Context } from 'telegraf';
 import { BotScenes } from '../types';
 import { I18nTranslateService } from '../../../i18n/i18n.service';
-import { BotButtons } from '../../bot.buttons';
+import { PetButtons } from './pet.buttons';
 
 @Scene(BotScenes.ADD_PET_GENDER)
 export class AddPetGender {
@@ -10,7 +10,7 @@ export class AddPetGender {
 
   @SceneEnter()
   async enterAddPetGender(@Ctx() ctx: Context) {
-    await ctx.reply('Выберите пол питомца:', BotButtons.petGender());
+    await ctx.reply('Выберите пол питомца:', PetButtons.petGender());
   }
 
   @Action(['male', 'female'])

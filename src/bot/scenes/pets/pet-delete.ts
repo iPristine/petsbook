@@ -4,7 +4,7 @@ import { BotScenes } from '../types';
 import { I18nTranslateService } from '../../../i18n/i18n.service';
 import { PetsService } from '../../../pets/pets.service';
 import { UserService } from '../../../user/user.service';
-import { BotButtons } from '../../bot.buttons';
+import { PetButtons } from './pet.buttons';
 
 @Scene(BotScenes.PET_DELETE)
 export class PetDelete {
@@ -18,7 +18,7 @@ export class PetDelete {
   async enterPetDelete(@Ctx() ctx: Context) {
     const petId = ctx['session']['currentPetId'];
     const pet = await this.petsService.getPetById(petId);
-    
+
     if (!pet) {
       await ctx.reply('Ошибка: Питомец не найден');
       await ctx['scene'].enter(BotScenes.MY_PETS);
@@ -33,7 +33,7 @@ export class PetDelete {
       `🎂 ${pet.age || 'Возраст не указан'}`,
     ].join('\n');
 
-    await ctx.reply(message, BotButtons.petDelete());
+    await ctx.reply(message, PetButtons.petDelete());
   }
 
   @Action('confirm_delete')
@@ -55,4 +55,4 @@ export class PetDelete {
   async cancelDelete(@Ctx() ctx: Context) {
     await ctx['scene'].enter(BotScenes.PET_DETAILS);
   }
-} 
+}

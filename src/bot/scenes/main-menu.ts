@@ -36,7 +36,7 @@ export class MainMenu {
     ctx['session']['language'] = ctx.callbackQuery['data'];
 
     await ctx['scene'].leave();
-    await ctx['scene'].enter(BotScenes.REMAINERS);
+    await ctx['scene'].enter(BotScenes.REMINDERS_LIST);
   }
 
   @Action('settings')

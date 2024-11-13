@@ -3,7 +3,7 @@ import { Context } from 'telegraf';
 import { BotScenes } from '../types';
 import { I18nTranslateService } from '../../../i18n/i18n.service';
 import { PetsService } from '../../../pets/pets.service';
-import { BotButtons } from '../../bot.buttons';
+import { PetButtons } from './pet.buttons';
 
 @Scene(BotScenes.PET_EDIT)
 export class PetEdit {
@@ -16,7 +16,7 @@ export class PetEdit {
   async enterPetEdit(@Ctx() ctx: Context) {
     const petId = ctx['session']['currentPetId'];
     const pet = await this.petsService.getPetById(petId);
-    
+
     if (!pet) {
       await ctx.reply('Ошибка: Питомец не найден');
       await ctx['scene'].enter(BotScenes.MY_PETS);
@@ -31,7 +31,7 @@ export class PetEdit {
       `🎂 Возраст: ${pet.age || 'Не указан'}`,
     ].join('\n');
 
-    await ctx.reply(message, BotButtons.petEdit());
+    await ctx.reply(message, PetButtons.petEdit());
   }
 
   @Action('edit_name')
@@ -68,7 +68,9 @@ export class PetEdit {
       } else if (field === 'age') {
         const age = parseInt(text);
         if (isNaN(age) || age < 0 || age > 30) {
-          await ctx.reply('Пожалуйста, введите корректный возраст (от 0 до 30 лет)');
+          await ctx.reply(
+            'Пожалуйста, введите корректный возраст (от 0 до 30 лет)',
+          );
           return;
         }
         await this.petsService.updatePet(petId, { age });
@@ -85,4 +87,4 @@ export class PetEdit {
   async back(@Ctx() ctx: Context) {
     await ctx['scene'].enter(BotScenes.PET_DETAILS);
   }
-} 
+}

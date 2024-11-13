@@ -25,6 +25,22 @@ import { PetDetails } from './scenes/pets/pet-details';
 import { PetEdit } from './scenes/pets/pet-edit';
 import { PetDelete } from './scenes/pets/pet-delete';
 import { DeletePetConfirm } from './scenes/pets/delete-pet-confirm';
+import { RemindersList } from './scenes/reminders/reminders-list';
+import { RemindersService } from 'src/reminders/reminders.service';
+import { AddReminderPets } from './scenes/reminders/add-reminder-pets';
+import { AddReminderDescription } from './scenes/reminders/add-reminder-description';
+import { AddReminderDate } from './scenes/reminders/add-reminder-date';
+import { AddReminderFrequency } from './scenes/reminders/add-reminder-frequency';
+import { AddReminderNotify } from './scenes/reminders/add-reminder-notify';
+import { AddReminderConfirm } from './scenes/reminders/add-reminder-confirm';
+import { ReminderDetails } from './scenes/reminders/reminder-details';
+import { EditReminder } from './scenes/reminders/edit-reminder';
+import { EditReminderDescription } from './scenes/reminders/edit-reminder-description';
+import { EditReminderDate } from './scenes/reminders/edit-reminder-date';
+import { EditReminderFrequency } from './scenes/reminders/edit-reminder-frequency';
+import { EditReminderNotify } from './scenes/reminders/edit-reminder-notify';
+import { DeleteReminderConfirm } from './scenes/reminders/delete-reminder-confirm';
+
 const sessions = new LocalSession({ database: 'session.json' });
 
 @Module({
@@ -51,6 +67,8 @@ const sessions = new LocalSession({ database: 'session.json' });
     Remainers,
     UserService,
     PetsService,
+    RemindersService,
+
     AddPetName,
     AddPetType,
     AddPetGender,
@@ -60,6 +78,21 @@ const sessions = new LocalSession({ database: 'session.json' });
     PetEdit,
     PetDelete,
     DeletePetConfirm,
+
+    RemindersList,
+    AddReminderPets,
+    AddReminderDescription,
+    AddReminderDate,
+    AddReminderFrequency,
+    AddReminderNotify,
+    AddReminderConfirm,
+    ReminderDetails,
+    EditReminder,
+    EditReminderDescription,
+    EditReminderDate,
+    EditReminderFrequency,
+    EditReminderNotify,
+    DeleteReminderConfirm,
   ],
 })
 export class BotModule {}

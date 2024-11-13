@@ -55,7 +55,7 @@ export class RemindersList {
   @Action('add_reminder')
   async addReminder(@Ctx() ctx: Context) {
     await ctx.answerCbQuery();
-    await ctx['scene'].enter(BotScenes.ADD_REMINDER_TITLE);
+    await ctx['scene'].enter(BotScenes.ADD_REMINDER_PETS);
   }
 
   @Action('back')

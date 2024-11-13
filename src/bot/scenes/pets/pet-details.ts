@@ -4,7 +4,7 @@ import { BotScenes } from '../types';
 import { I18nTranslateService } from '../../../i18n/i18n.service';
 import { PetsService } from '../../../pets/pets.service';
 import { UserService } from '../../../user/user.service';
-import { BotButtons } from '../../bot.buttons';
+import { PetButtons } from './pet.buttons';
 
 @Scene(BotScenes.PET_DETAILS)
 export class PetDetails {
@@ -38,7 +38,7 @@ export class PetDetails {
       `📅 Добавлен: ${pet.createdAt.toLocaleDateString()}`,
     ].join('\n');
 
-    await ctx.reply(message, BotButtons.petDetails());
+    await ctx.reply(message, PetButtons.petDetails());
   }
 
   @Action('edit_pet')
@@ -58,4 +58,4 @@ export class PetDetails {
     await ctx.answerCbQuery();
     await ctx['scene'].enter(BotScenes.MY_PETS);
   }
-} 
+}

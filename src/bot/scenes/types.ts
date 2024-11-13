@@ -30,4 +30,9 @@ export enum BotScenes {
   ADD_REMINDER_CONFIRM = 'add-reminder-confirm',
   REMINDER_DETAILS = 'reminder-details',
   EDIT_REMINDER = 'edit-reminder',
+  EDIT_REMINDER_DESCRIPTION = 'edit-reminder-description',
+  EDIT_REMINDER_DATE = 'edit-reminder-date',
+  EDIT_REMINDER_FREQUENCY = 'edit-reminder-frequency',
+  EDIT_REMINDER_NOTIFY = 'edit-reminder-notify',
+  DELETE_REMINDER_CONFIRM = 'delete-reminder-confirm',
 }

@@ -4,7 +4,7 @@ import { BotScenes } from '../types';
 import { I18nTranslateService } from '../../../i18n/i18n.service';
 import { PetsService } from '../../../pets/pets.service';
 import { UserService } from '../../../user/user.service';
-import { BotButtons } from '../../bot.buttons';
+import { PetButtons } from './pet.buttons';
 
 @Scene(BotScenes.ADD_PET_CONFIRM)
 export class AddPetConfirm {
@@ -26,7 +26,7 @@ export class AddPetConfirm {
       `Пол: ${petGender === 'male' ? '♂️ Мальчик' : '♀️ Девочка'}`,
     ].join('\n');
 
-    await ctx.reply(message, BotButtons.petConfirm());
+    await ctx.reply(message, PetButtons.petConfirm());
   }
 
   @Action(['confirm', 'cancel'])

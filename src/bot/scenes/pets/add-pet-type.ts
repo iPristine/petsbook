@@ -3,7 +3,7 @@ import { Context } from 'telegraf';
 import { BotScenes } from '../types';
 import { I18nTranslateService } from '../../../i18n/i18n.service';
 import { PetsService } from '../../../pets/pets.service';
-import { BotButtons } from '../../bot.buttons';
+import { PetButtons } from './pet.buttons';
 import { UserService } from 'src/user/user.service';
 
 @Scene(BotScenes.ADD_PET_TYPE)
@@ -17,7 +17,7 @@ export class AddPetType {
   @SceneEnter()
   async enterAddPetType(@Ctx() ctx: Context) {
     const petGender = ctx['session']['petGender'];
-    await ctx.reply('Выберите тип питомца:', BotButtons.petTypes(petGender));
+    await ctx.reply('Выберите тип питомца:', PetButtons.petTypes(petGender));
   }
 
   @Action(['cat', 'dog'])

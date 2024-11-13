@@ -4,16 +4,22 @@
       "id": "211870571:211870571",
       "data": {
         "__scenes": {
-          "current": "my-profile",
+          "current": "reminders-list",
           "state": {}
         },
-        "language": "my-profile",
+        "language": "remainders",
         "petName": "Ластюша",
         "petGender": "female",
         "petType": "dog",
         "petAge": 9,
         "currentPetId": "cm3eqv25f0003e683ph5r6p68",
-        "editField": "age"
+        "editField": "age",
+        "reminderPets": [],
+        "reminderDescription": "Записаться к ветеринару",
+        "reminderDate": "2024-12-11T21:00:00.000Z",
+        "reminderFrequency": "once",
+        "reminderNotifyDays": 0,
+        "currentReminderId": "cm3fn558i0004wmzwuwpa90rn"
       }
     }
   ]

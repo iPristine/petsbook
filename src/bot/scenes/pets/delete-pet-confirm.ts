@@ -4,7 +4,7 @@ import { BotScenes } from '../types';
 import { I18nTranslateService } from '../../../i18n/i18n.service';
 import { PetsService } from '../../../pets/pets.service';
 import { UserService } from '../../../user/user.service';
-import { BotButtons } from '../../bot.buttons';
+import { PetButtons } from './pet.buttons';
 
 @Scene(BotScenes.DELETE_PET_CONFIRM)
 export class DeletePetConfirm {
@@ -32,7 +32,7 @@ export class DeletePetConfirm {
       `🐶 Тип: ${pet.type === 'dog' ? 'Собака' : 'Кошка'}`,
     ];
 
-    await ctx.reply(message.join('\n'), BotButtons.petDeleteConfirm());
+    await ctx.reply(message.join('\n'), PetButtons.petDeleteConfirm());
   }
 
   @Action(['confirm_delete', 'cancel_delete'])
