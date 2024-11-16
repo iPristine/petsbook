@@ -23,6 +23,16 @@
         "reminderNotifyDays": 1,
         "currentReminderId": "cm3fnkmko0001149s87yyvfkc"
       }
+    },
+    {
+      "id": "649400554:649400554",
+      "data": {
+        "__scenes": {
+          "current": "main-menu",
+          "state": {}
+        },
+        "language": "back"
+      }
     }
   ]
 }

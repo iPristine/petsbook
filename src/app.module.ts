@@ -7,15 +7,21 @@ import { ConfigModule } from '@nestjs/config';
 import { I18nTranslateModule } from './i18n/i18n.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { NotificationsService } from './notifications/notifications.service';
+import { RemindersService } from './reminders/reminders.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    BotModule,
     I18nTranslateModule,
+    BotModule,
     ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService, NotificationsService],
+  providers: [
+    AppService,
+    PrismaService,
+    NotificationsService,
+    RemindersService,
+  ],
 })
 export class AppModule {}

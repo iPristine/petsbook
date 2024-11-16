@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { PrismaService } from '../prisma.service';
 import { Context, Telegraf } from 'telegraf';
 import { InjectBot } from 'nestjs-telegraf';
+import { RemindersService } from '../reminders/reminders.service';
+import { Pet, Reminder, User } from '@prisma/client';
 
 @Injectable()
 export class NotificationsService {
   constructor(
-    private prisma: PrismaService,
+    private remindersService: RemindersService,
     @InjectBot() private bot: Telegraf<Context>,
   ) {}
 
@@ -16,68 +17,32 @@ export class NotificationsService {
     await this.checkPreNotifications();
 
     const now = new Date();
-    const reminders = await this.prisma.reminder.findMany({
-      where: {
-        OR: [
-          {
-            // Проверяем разовые напоминания
-            frequency: 'once',
-            date: {
-              gte: now,
-              lte: new Date(now.getTime() + 60000), // следующая минута
-            },
-          },
-          {
-            // Проверяем еженедельные напоминания
-            frequency: 'weekly',
-            date: {
-              gte: now,
-              lte: new Date(now.getTime() + 60000),
-            },
-          },
-          {
-            // Проверяем ежемесячные напоминания
-            frequency: 'monthly',
-            date: {
-              gte: now,
-              lte: new Date(now.getTime() + 60000),
-            },
-          },
-          {
-            // Проверяем ежеквартальные напоминания
-            frequency: 'quarterly',
-            date: {
-              gte: now,
-              lte: new Date(now.getTime() + 60000),
-            },
-          },
-          {
-            // Проверяем ежегодные напоминания
-            frequency: 'yearly',
-            date: {
-              gte: now,
-              lte: new Date(now.getTime() + 60000),
-            },
-          },
-        ],
-      },
-      include: {
-        user: true,
-        pets: {
-          include: {
-            pet: true,
-          },
-        },
-      },
-    });
+    const nextMinute = new Date(now.getTime() + 60000);
+
+    const reminders = await this.remindersService.findRemindersInTimeRange(
+      now,
+      nextMinute,
+    );
 
     for (const reminder of reminders) {
       await this.sendNotification(reminder);
-      await this.updateReminderDate(reminder);
+      if (reminder.frequency === 'once') {
+        await this.remindersService.deleteReminder(reminder.id);
+      } else {
+        const nextDate = this.calculateNextDate(
+          reminder.date,
+          reminder.frequency,
+        );
+        await this.remindersService.updateReminder(reminder.id, {
+          date: nextDate,
+        });
+      }
     }
   }
 
-  private async sendNotification(reminder: any) {
+  private async sendNotification(
+    reminder: Reminder & { user: User; pets: { pet: Pet }[] },
+  ) {
     const petsInfo =
       reminder.pets.length > 0
         ? `🐾 Питомцы: ${reminder.pets.map((p) => p.pet.name).join(', ')}`
@@ -94,18 +59,9 @@ export class NotificationsService {
     }
   }
 
-  private async updateReminderDate(reminder: any) {
-    if (reminder.frequency === 'once') {
-      // Для разовых напоминаний - удаляем после отправки
-      await this.prisma.reminder.delete({
-        where: { id: reminder.id },
-      });
-      return;
-    }
-
-    // Обновляем дату следующего напоминания
-    const nextDate = new Date(reminder.date);
-    switch (reminder.frequency) {
+  private calculateNextDate(currentDate: Date, frequency: string): Date {
+    const nextDate = new Date(currentDate);
+    switch (frequency) {
       case 'weekly':
         nextDate.setDate(nextDate.getDate() + 7);
         break;
@@ -119,43 +75,19 @@ export class NotificationsService {
         nextDate.setFullYear(nextDate.getFullYear() + 1);
         break;
     }
-
-    await this.prisma.reminder.update({
-      where: { id: reminder.id },
-      data: { date: nextDate },
-    });
+    return nextDate;
   }
 
   private async checkPreNotifications() {
     const now = new Date();
-    const reminders = await this.prisma.reminder.findMany({
-      where: {
-        OR: [
-          {
-            notifyDays: 1,
-            date: {
-              gte: new Date(now.getTime() + 24 * 60 * 60 * 1000 - 60000),
-              lte: new Date(now.getTime() + 24 * 60 * 60 * 1000),
-            },
-          },
-          {
-            notifyDays: 7,
-            date: {
-              gte: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000 - 60000),
-              lte: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000),
-            },
-          },
-        ],
-      },
-      include: {
-        user: true,
-        pets: {
-          include: {
-            pet: true,
-          },
-        },
-      },
-    });
+    const oneDayAhead = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    const oneWeekAhead = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+    const reminders = await this.remindersService.findPreNotifications(
+      now,
+      oneDayAhead,
+      oneWeekAhead,
+    );
 
     for (const reminder of reminders) {
       const daysText = reminder.notifyDays === 1 ? 'завтра' : 'через неделю';

@@ -81,6 +81,7 @@ export class AddReminderConfirm {
 
     try {
       await this.remindersService.createReminder(user.id, {
+        chatId: ctx.from.id.toString(),
         title: reminderDescription,
         date: reminderDate,
         frequency: reminderFrequency,

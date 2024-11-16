@@ -10,6 +10,7 @@ import * as path from 'path';
       loaderOptions: {
         path: path.join(__dirname, '/'),
         watch: true,
+        extension: '.json',
       },
       resolvers: [
         {
@@ -18,6 +19,7 @@ import * as path from 'path';
         },
         AcceptLanguageResolver,
       ],
+      // To update generated types you need to remove ./generated folder
       typesOutputPath: 'src/i18n/generated/i18n.generated.ts',
     }),
   ],

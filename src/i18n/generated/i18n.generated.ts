@@ -46,6 +46,7 @@ export type I18nTranslations = {
     "main": {
         "WELCOME": string;
         "HELP": string;
+        "DESCRIPTION": string;
         "CHOOSE_OPT": string;
         "CHOOSE_LANG": string;
         "DEFAULT_CURRENCY": string;

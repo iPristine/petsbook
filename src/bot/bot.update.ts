@@ -6,7 +6,6 @@ import { I18nTranslateService } from 'src/i18n/i18n.service';
 import { BotButtons } from './bot.buttons';
 import { BotScenes } from './scenes/types';
 import { UserService } from 'src/user/user.service';
-import { I18nTranslations } from 'src/i18n/generated/i18n.generated';
 import { I18nService } from 'nestjs-i18n';
 
 @Update()
@@ -15,7 +14,7 @@ export class BotUpdate {
     private logger: LoggerService,
     private logViewer: LogViewerService,
     private i18n: I18nTranslateService,
-    private readonly i18nService: I18nService<I18nTranslations>,
+    private readonly i18nService: I18nService,
     private userService: UserService,
     @InjectBot() private bot: Telegraf<Context>,
   ) {}
@@ -115,6 +114,38 @@ export class BotUpdate {
       return `🚫 Последние ошибки:\n\n${formattedErrors}`;
     } catch (error) {
       return 'Не удалось получить список ошибок';
+    }
+  }
+
+  @Command('notify')
+  async sendNotification(@Ctx() ctx: Context) {
+    try {
+      const user = await this.userService.findOne(ctx.from.id);
+
+      const message = [
+        '🔔 Тестовое уведомление',
+        `👤 Отправлено пользователю: ${user.firstName}`,
+        '📝 Это проверка системы уведомлений',
+        '⏰ Время отправки: ' + new Date().toLocaleString('ru'),
+      ].join('\n');
+
+      await this.bot.telegram.sendMessage(user.telegramId, message);
+
+      await this.logger.logUserAction({
+        telegramId: user.telegramId,
+        action: 'TEST_NOTIFICATION',
+        details: 'Test notification sent successfully',
+      });
+
+      return '✅ Тестовое уведомление отправлено';
+    } catch (error) {
+      await this.logger.logUserAction({
+        telegramId: ctx.from.id.toString(),
+        action: 'TEST_NOTIFICATION',
+        error: error.message,
+      });
+
+      return '❌ Ошибка при отправке тестового уведомления';
     }
   }
 }
