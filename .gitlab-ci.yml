@@ -1,24 +1,20 @@
-image: docker:latest
-
-services:
-  - docker:dind
-
-variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""
-
 stages:
+  - build
   - deploy
 
+build:
+  stage: build
+  tags:
+    - prod
+  script:
+    - docker compose down
+    - docker compose build
 
 deploy:
   stage: deploy
   tags:
     - prod
   script:
-    - echo "DATABASE_URL=${DATABASE_URL}" >> .env
-    - echo "TELEGRAM_BOT_TOKEN=${BOT_TOKEN}" >> .env
-    - docker compose down
-    - docker compose up -d --build
+    - docker compose up -d
   only:
     - main

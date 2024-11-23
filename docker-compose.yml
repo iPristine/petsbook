@@ -8,6 +8,7 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - BOT_TOKEN=${BOT_TOKEN}
       - NODE_ENV=production
+    entrypoint: sh ./init.sh
     restart: always
     volumes:
       - .:/app
