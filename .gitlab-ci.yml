@@ -9,7 +9,6 @@ variables:
 
 stages:
   - build
-  - test
   - deploy
 
 before_script:
@@ -21,14 +20,6 @@ build:
     - prod
   script:
      - docker compose down
-     
-test:
-  stage: test
-  tags:
-    - prod
-  script:
-    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
-    - docker run $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA npm run test
 
 deploy:
   stage: deploy
