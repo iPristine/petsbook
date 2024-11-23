@@ -8,6 +8,7 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - BOT_TOKEN=${BOT_TOKEN}
       - NODE_ENV=production
+    entrypoint: npm run build && npm run start:prod
     restart: always
     volumes:
       - .:/app
