@@ -10,6 +10,7 @@ variables:
 stages:
   - deploy
 
+
 deploy:
   stage: deploy
   tags:
