@@ -6,7 +6,7 @@ services:
       - "3000:3000"
     environment:
       - DATABASE_URL=${DATABASE_URL}
-      - BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - BOT_TOKEN=${BOT_TOKEN}
       - NODE_ENV=production
     entrypoint: sh ./init.sh
     restart: always
