@@ -16,7 +16,7 @@ deploy:
     - prod
   script:
     - echo "DATABASE_URL=${DATABASE_URL}" >> .env
-    - echo "BOT_TOKEN=${BOT_TOKEN}" >> .env
+    - echo "TELEGRAM_BOT_TOKEN=${BOT_TOKEN}" >> .env
     - docker compose down
     - docker compose up -d --build
   only:
