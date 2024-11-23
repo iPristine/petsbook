@@ -3,7 +3,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { Context, Telegraf } from 'telegraf';
 import { InjectBot } from 'nestjs-telegraf';
 import { RemindersService } from '../reminders/reminders.service';
-import { Pet, Reminder, User } from '@prisma/client';
+import { Pet, Reminder, ReminderFrequency, User } from '@prisma/client';
 
 @Injectable()
 export class NotificationsService {
@@ -17,16 +17,17 @@ export class NotificationsService {
     await this.checkPreNotifications();
 
     const now = new Date();
-    const nextMinute = new Date(now.getTime() + 60000);
+    const nextDay = new Date(now.getTime() + 60000*60*24);
+
 
     const reminders = await this.remindersService.findRemindersInTimeRange(
       now,
-      nextMinute,
+      nextDay,
     );
 
     for (const reminder of reminders) {
       await this.sendNotification(reminder);
-      if (reminder.frequency === 'once') {
+      if (reminder.frequency === ReminderFrequency.ONCE) {
         await this.remindersService.deleteReminder(reminder.id);
       } else {
         const nextDate = this.calculateNextDate(

@@ -1,8 +1,8 @@
 import { Action, Ctx, Scene, SceneEnter } from 'nestjs-telegraf';
-import { Context } from 'telegraf';
 import { I18nTranslateService } from '../../i18n/i18n.service';
 import { BotScenes } from './types';
 import { BotButtons } from '../bot.buttons';
+import { BotContext } from '../interfaces/context.interface';
 
 @Scene(BotScenes.SETTINGS)
 export class Settings {
@@ -11,14 +11,18 @@ export class Settings {
   }
 
   @SceneEnter()
-  async enterSettings(@Ctx() ctx: Context) {
+  async enterSettings(@Ctx() ctx: BotContext) {
     await ctx.reply('Settings:', BotButtons.settings());
   }
 
-  @Action('back')
-  async getMainMenu(@Ctx() ctx: Context) {
-    ctx['session']['language'] = ctx.callbackQuery['data'];
+  @Action('language')
+  async getLanguage(@Ctx() ctx: BotContext) {
+    await ctx.scene.enter(BotScenes.LANGUAGE);
+  }
 
-    await ctx['scene'].enter(BotScenes.MAIN_MENU);
+  @Action('back')
+  async getMainMenu(@Ctx() ctx: BotContext) {
+
+    await ctx.scene.enter(BotScenes.MAIN_MENU);
   }
 }

@@ -1,16 +1,16 @@
 import { Ctx, Scene, SceneEnter, On } from 'nestjs-telegraf';
-import { Context } from 'telegraf';
 import { BotScenes } from '../types';
+import { BotContext } from 'src/bot/interfaces/context.interface';
 
 @Scene(BotScenes.ADD_REMINDER_DESCRIPTION)
 export class AddReminderDescription {
   @SceneEnter()
-  async enterAddReminderDescription(@Ctx() ctx: Context) {
+  async enterAddReminderDescription(@Ctx() ctx: BotContext) {
     await ctx.reply('Введите описание напоминания:');
   }
 
   @On('text')
-  async onDescription(@Ctx() ctx: Context) {
+  async onDescription(@Ctx() ctx: BotContext) {
     const description = ctx.message['text'];
 
     if (description.length < 2 || description.length > 100) {
@@ -18,7 +18,7 @@ export class AddReminderDescription {
       return;
     }
 
-    ctx['session']['reminderDescription'] = description;
-    await ctx['scene'].enter(BotScenes.ADD_REMINDER_DATE);
+    ctx.session.data.reminderDescription = description;
+    await ctx.scene.enter(BotScenes.ADD_REMINDER_DATE);
   }
 }

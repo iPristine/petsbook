@@ -1,3 +1,4 @@
+import { ReminderFrequency } from '@prisma/client';
 import { Markup } from 'telegraf';
 
 export class ReminderButtons {
@@ -11,23 +12,8 @@ export class ReminderButtons {
     return Markup.inlineKeyboard(buttons);
   }
 
-  static frequency() {
-    return Markup.inlineKeyboard([
-      [Markup.button.callback('📅 Разовое', 'freq_once')],
-      [Markup.button.callback('🔄 Раз в неделю', 'freq_weekly')],
-      [Markup.button.callback('🔄 Раз в месяц', 'freq_monthly')],
-      [Markup.button.callback('🔄 Раз в 3 месяца', 'freq_quarterly')],
-      [Markup.button.callback('🔄 Раз в год', 'freq_yearly')],
-    ]);
-  }
 
-  static notifyBefore() {
-    return Markup.inlineKeyboard([
-      [Markup.button.callback('🔔 В тот же день', 'notify_0')],
-      [Markup.button.callback('🔔 За день до', 'notify_1')],
-      [Markup.button.callback('🔔 За неделю до', 'notify_7')],
-    ]);
-  }
+
 
   static confirmReminder() {
     return Markup.inlineKeyboard([

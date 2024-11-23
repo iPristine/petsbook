@@ -37,7 +37,6 @@ export class UserService {
         firstName,
         lastName: lastName || null,
         username: username || null,
-        lang,
       },
       create: {
         telegramId: telegramId.toString(),

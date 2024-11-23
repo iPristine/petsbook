@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { Pet, Reminder, User } from '@prisma/client';
+import { Pet, Reminder, User, ReminderFrequency } from '@prisma/client';
 
 interface CreateReminderDto {
   userId: string; // Обязательное поле
@@ -8,7 +8,7 @@ interface CreateReminderDto {
   title: string;
   description?: string;
   date: Date;
-  frequency: 'once' | 'weekly' | 'monthly' | 'quarterly' | 'yearly';
+  frequency: ReminderFrequency;
   notifyDays: 0 | 1 | 7;
   petIds?: string[]; // Опциональное поле
 }
@@ -67,7 +67,7 @@ export class RemindersService {
       title?: string;
       description?: string;
       date?: Date;
-      frequency?: string;
+      frequency?: ReminderFrequency;
       notifyDays?: number;
       petIds?: string[];
     },

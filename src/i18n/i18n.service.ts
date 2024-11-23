@@ -1,27 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { I18nService } from 'nestjs-i18n';
+import { I18nService, TranslateOptions } from 'nestjs-i18n';
 import { User } from '@prisma/client';
+import { BotContext } from 'src/bot/interfaces/context.interface';
 export type ButtonsLocalNames = string;
+
+
+type TOptions = {
+  key: string;
+  options?: TranslateOptions;
+  ctx?: BotContext;
+}
 
 @Injectable()
 export class I18nTranslateService {
   constructor(private readonly i18nService: I18nService) {}
 
-  async getWelcome({ lang, firstName, lastName }: User): Promise<string> {
-    return await this.i18nService.t('main.WELCOME', {
-      lang: lang,
-      args: {
-        first_name: firstName,
-        last_name: lastName || '',
-      },
-    });
-  }
-
-  async getChooseCommands(lang: string): Promise<string> {
-    return await this.i18nService.t('main.CHOOSE_OPT', { lang });
-  }
-
-  async getChooseLanguage(lang: string): Promise<string> {
-    return await this.i18nService.t('main.CHOOSE_LANG', { lang });
+  async t({key, options, ctx}: TOptions): Promise<string> {
+    return await this.i18nService.t(key, {lang: ctx?.session.data.language, ...options});
   }
 }

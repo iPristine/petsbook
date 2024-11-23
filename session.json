@@ -4,10 +4,10 @@
       "id": "211870571:211870571",
       "data": {
         "__scenes": {
-          "current": "main-menu",
+          "current": "reminders-list",
           "state": {}
         },
-        "language": "remainders",
+        "language": "ru",
         "petName": "Ластюша",
         "petGender": "female",
         "petType": "dog",
@@ -17,11 +17,23 @@
         "reminderPets": [
           "cm3esl34l000339n2t9ux9i9m"
         ],
-        "reminderDescription": "Забрать ластю",
-        "reminderDate": "2024-11-13T21:00:00.000Z",
+        "reminderDescription": "asdsdasd",
+        "reminderDate": "2025-01-16",
         "reminderFrequency": "once",
-        "reminderNotifyDays": 1,
-        "currentReminderId": "cm3fnkmko0001149s87yyvfkc"
+        "reminderNotifyDays": 0,
+        "currentReminderId": "cm3fnkmko0001149s87yyvfkc",
+        "data": {
+          "language": "ru",
+          "reminderPets": [
+            "cm3esl34l000339n2t9ux9i9m"
+          ],
+          "reminderDescription": "qweqwe",
+          "lastBotMessages": [],
+          "reminderDate": "2024-11-24T00:00:00.000Z",
+          "reminderFrequency": "ONCE",
+          "reminderNotifyDays": 0,
+          "currentReminderId": "cm3u0t57g0001jaztb14wtbtg"
+        }
       }
     },
     {
@@ -32,6 +44,32 @@
           "state": {}
         },
         "language": "back"
+      }
+    },
+    {
+      "id": "306348049:306348049",
+      "data": {
+        "__scenes": {
+          "current": "add-pet-confirm",
+          "state": {}
+        },
+        "language": "my-pets",
+        "petName": "Пеба",
+        "petGender": "male",
+        "petType": "cat",
+        "petAge": 2,
+        "currentPetId": "cm3o6goxh00063hrwxvlyvsxi"
+      }
+    },
+    {
+      "id": "69545033:69545033",
+      "data": {
+        "__scenes": {
+          "current": "pet-details",
+          "state": {}
+        },
+        "language": "my-pets",
+        "currentPetId": "cm3esnd51000939n27zxhk8sq"
       }
     }
   ]

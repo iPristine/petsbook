@@ -7,6 +7,7 @@ import { BotButtons } from './bot.buttons';
 import { BotScenes } from './scenes/types';
 import { UserService } from 'src/user/user.service';
 import { I18nService } from 'nestjs-i18n';
+import { BotContext } from './interfaces/context.interface';
 
 @Update()
 export class BotUpdate {
@@ -14,15 +15,15 @@ export class BotUpdate {
     private logger: LoggerService,
     private logViewer: LogViewerService,
     private i18n: I18nTranslateService,
-    private readonly i18nService: I18nService,
+    private i18nService: I18nService,
     private userService: UserService,
     @InjectBot() private bot: Telegraf<Context>,
   ) {}
 
-  @Start()
-  async startCommand(@Ctx() ctx: Context) {
-    const { id, first_name, last_name, username, language_code } = ctx.from;
 
+  @Start()
+  async startCommand(@Ctx() ctx: BotContext) {
+    const { id, first_name, last_name, username, language_code } = ctx.from;
     try {
       const user = await this.userService.createOrUpdate({
         telegramId: id,
@@ -31,15 +32,28 @@ export class BotUpdate {
         username: username,
         lang: language_code,
       });
+      ctx.session.data = {};
+
+      ctx.session.data.language = user.lang;
+
+      const welcomeMessage = await this.i18nService.t('main.WelcomeHTML', {
+        lang: user.lang,
+        args: {
+          first_name: user.firstName,
+          last_name: user.lastName || '',
+        },
+      });
+
+      await ctx.replyWithHTML(welcomeMessage);
+
+      await ctx.scene.enter(BotScenes.MAIN_MENU);
 
       await this.logger.logUserAction({
         telegramId: id.toString(),
         action: 'START_COMMAND',
         details: `User registered/updated: ${first_name} (${username || 'no username'})`,
       });
-      await ctx.reply(await this.i18n.getWelcome(user));
 
-      await ctx['scene'].enter(BotScenes.MAIN_MENU);
     } catch (error) {
       await this.logger.logUserAction({
         telegramId: id.toString(),
@@ -47,34 +61,40 @@ export class BotUpdate {
         error: error.message,
       });
 
+    
       return 'ERRORS.REGISTRATION';
     }
   }
 
   @Command('lang')
-  async getBotLanguage(@Ctx() ctx: Context) {
+  async getBotLanguage(@Ctx() ctx: BotContext) {
     await ctx.deleteMessage();
-    await ctx['scene'].enter(BotScenes.LANGUAGE);
+    await ctx.scene.enter(BotScenes.LANGUAGE);
     await ctx.reply(
-      await this.i18n.getChooseLanguage(ctx['session']['language']),
+      await this.i18n.t({key: 'main.CHOOSE_LANG', ctx}),
+
+    );
+
+    await ctx.reply(
+      await this.i18n.t({key: 'main.CHOOSE_LANG', ctx}),
       BotButtons.chooseLanguage(),
     );
   }
 
   @Command('main')
-  async getMainMenu(@Ctx() ctx: Context) {
+  async getMainMenu(@Ctx() ctx: BotContext) {
     await ctx.deleteMessage();
-    await ctx['scene'].enter(BotScenes.MAIN_MENU);
+    await ctx.scene.enter(BotScenes.MAIN_MENU);
   }
 
   @Command('my-profile')
-  async getMyProfile(@Ctx() ctx: Context) {
+  async getMyProfile(@Ctx() ctx: BotContext) {
     await ctx.deleteMessage();
-    await ctx['scene'].enter(BotScenes.MAIN_MENU);
+    await ctx.scene.enter(BotScenes.MAIN_MENU);
   }
 
   @Command('logs')
-  async viewLogs(@Ctx() ctx: Context) {
+  async viewLogs(@Ctx() ctx: BotContext) {
     try {
       const logs = await this.logViewer.getUserLogs(ctx.from.id.toString());
 
@@ -96,7 +116,7 @@ export class BotUpdate {
   }
 
   @Command('errors')
-  async viewErrors(@Ctx() ctx: Context) {
+  async viewErrors(@Ctx() ctx: BotContext) {
     try {
       const errors = await this.logViewer.getLastErrors(ctx.from.id.toString());
 
@@ -118,7 +138,7 @@ export class BotUpdate {
   }
 
   @Command('notify')
-  async sendNotification(@Ctx() ctx: Context) {
+  async sendNotification(@Ctx() ctx: BotContext) {
     try {
       const user = await this.userService.findOne(ctx.from.id);
 

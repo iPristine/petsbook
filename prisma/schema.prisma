@@ -68,7 +68,7 @@ model Reminder {
   title       String
   description String?
   date        DateTime
-  frequency   String?   // once, weekly, monthly, quarterly, yearly
+  frequency   ReminderFrequency?
   notifyDays  Int?      // 0 = same day, 1 = day before, 7 = week before
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -78,6 +78,14 @@ model Reminder {
 
   @@index([date])
   @@index([userId])
+}
+
+enum ReminderFrequency {
+  ONCE
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+  YEARLY
 }
 
 model PetReminder {

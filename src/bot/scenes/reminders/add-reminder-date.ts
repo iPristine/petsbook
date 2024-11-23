@@ -1,35 +1,49 @@
-import { Ctx, Scene, SceneEnter, On } from 'nestjs-telegraf';
-import { Context } from 'telegraf';
+import { Ctx, Scene, SceneEnter, Action, InjectBot } from 'nestjs-telegraf';
 import { BotScenes } from '../types';
+import { BotContext } from 'src/bot/interfaces/context.interface';
+import { I18nTranslateService } from 'src/i18n/i18n.service';
+import { Telegraf } from 'telegraf';
+const Calendar = require('telegraf-calendar-telegram');
 
 @Scene(BotScenes.ADD_REMINDER_DATE)
 export class AddReminderDate {
-  @SceneEnter()
-  async enterAddReminderDate(@Ctx() ctx: Context) {
-    await ctx.reply(
-      'Введите дату напоминания в формате ДД.ММ.ГГГГ\nНапример: 25.12.2024',
-    );
+  private calendar: any;
+
+  constructor(
+    private i18n: I18nTranslateService,
+    @InjectBot() private bot: Telegraf<BotContext>
+  ) {
+    this.calendar = new Calendar(this.bot, {
+      startWeekDay: 1,
+      weekDayNames: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+      monthNames: [
+        'Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн',
+        'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'
+      ],
+      minDate: new Date(),
+      maxDate: new Date(2030, 11, 31)
+    });
   }
 
-  @On('text')
-  async onDate(@Ctx() ctx: Context) {
-    const dateText = ctx.message['text'];
-    const [day, month, year] = dateText.split('.').map(Number);
-    const date = new Date(year, month - 1, day);
+  @SceneEnter()
+  async enterAddReminderDate(@Ctx() ctx: BotContext) {
+    const sentMessage = await ctx.reply('Выберите дату напоминания:', 
+      await this.calendar.getCalendar());
+    
+    ctx.session.data.lastBotMessages = [sentMessage.message_id];
+    this.calendar.setDateListener(this.onDateSelect);
+  }
 
-    if (
-      isNaN(date.getTime()) ||
-      date < new Date() ||
-      year < 2024 ||
-      year > 2030
-    ) {
-      await ctx.reply(
-        'Пожалуйста, введите корректную дату в будущем (не позднее 2030 года)',
-      );
+  async onDateSelect(@Ctx() ctx: BotContext, date: string) {
+    
+    if (!date) {
+      await ctx.reply('Пожалуйста, выберите корректную дату');
       return;
     }
 
-    ctx['session']['reminderDate'] = date;
-    await ctx['scene'].enter(BotScenes.ADD_REMINDER_FREQUENCY);
+    ctx.session.data.reminderDate = new Date(date);
+    await ctx.scene.enter(BotScenes.ADD_REMINDER_FREQUENCY);
   }
+
+
 }

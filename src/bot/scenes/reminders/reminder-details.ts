@@ -1,17 +1,18 @@
 import { Action, Ctx, Scene, SceneEnter } from 'nestjs-telegraf';
-import { Context } from 'telegraf';
 import { BotScenes } from '../types';
 import { RemindersService } from '../../../reminders/reminders.service';
 import { ReminderButtons } from './reminder.buttons';
+import { BotContext } from 'src/bot/interfaces/context.interface';
+
 
 @Scene(BotScenes.REMINDER_DETAILS)
 export class ReminderDetails {
   constructor(private remindersService: RemindersService) {}
 
   @SceneEnter()
-  async enterReminderDetails(@Ctx() ctx: Context) {
-    const reminderId = ctx['session']['currentReminderId'];
-    const reminder = await this.remindersService.getReminderById(reminderId);
+  async enterReminderDetails(@Ctx() ctx: BotContext) {
+    const reminderId = ctx.session.data.currentReminderId;
+    const reminder = await this.remindersService.getReminderById(+reminderId);
 
     if (!reminder) {
       await ctx.reply('Ошибка: Напоминание не найдено');
@@ -51,20 +52,20 @@ export class ReminderDetails {
   }
 
   @Action('edit_reminder')
-  async editReminder(@Ctx() ctx: Context) {
+  async editReminder(@Ctx() ctx: BotContext) {
     await ctx.answerCbQuery();
-    await ctx['scene'].enter(BotScenes.EDIT_REMINDER);
+    await ctx.scene.enter(BotScenes.EDIT_REMINDER);
   }
 
   @Action('delete_reminder')
-  async deleteReminder(@Ctx() ctx: Context) {
+  async deleteReminder(@Ctx() ctx: BotContext) {
     await ctx.answerCbQuery();
-    await ctx['scene'].enter(BotScenes.DELETE_REMINDER_CONFIRM);
+    await ctx.scene.enter(BotScenes.DELETE_REMINDER_CONFIRM);
   }
 
   @Action('back_to_list')
-  async backToList(@Ctx() ctx: Context) {
+  async backToList(@Ctx() ctx: BotContext) {
     await ctx.answerCbQuery();
-    await ctx['scene'].enter(BotScenes.REMINDERS_LIST);
+    await ctx.scene.enter(BotScenes.REMINDERS_LIST);
   }
 }

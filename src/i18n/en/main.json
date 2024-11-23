@@ -1,31 +1,10 @@
 {
-  "WELCOME": "Приветствую, {first_name} {last_name}!\nЯ помогу отслеживать вам важные события про ваших питомцев.\nВы можете создавать: регулярные или разовые напоминания для каждого вашего питомца.\nНапример я могу напомнить что пора записаться на регулярный прием к ветеринару или о дне рождения вашего питомца.\n\nДавайте начнем:\nЗайдите в раздел \"Мои питоцы\" и заполните краткую информацию о вашем питомце",
-  "HELP": "<b>Welcome to the help of the expense calculation bot</b>\n 1. <i>/commands</i> Getting a list of bot commands \n All wishes and questions: @xanarond \n Support the project:\n Binance Pay ID: 204196788\n USDT(BEP20): 0x4bebcc88cd013d0dbbaa5fcf7ca483245d1054e4 \n USDT(ERС20): 0x4bebcc88cd013d0dbbaa5fcf7ca483245d1054e4",
-  "DESCRIPTION": "Описание бота",
-  "CHOOSE_OPT": "☟ Select an option from the list",
-  "CHOOSE_LANG": "Choose bot language ☟",
-  "DEFAULT_CURRENCY": "\uD83D\uDCB3 Select the main currency for further calculation:",
-  "SHOW_COMMANDS": "☟ Here are the main commands:",
-  "MAIN_CURRENCY": "The main currency for calculating the exchange rate has become {currency}",
-  "CURRENCIES": "Here are the current courses:",
-  "NO_INFO": "No information at the moment!",
-  "NOT_CORRECT": "Check the correctness of the entered data!",
-  "CAN_CHOOSE": "You can choose the option ☟",
-  "CURRENCY_SUM_ABOUT": "Available operations: Addition, Multiplication\n For example: 100; 100.343 * 5; 5.34 + 300\n Enter the values of {main_currency}:",
-  "YOUR_VALUE": "Your value: {sum} {currency}",
-  "SUMS": "You can continue to enter amounts either:",
-  "ADDED_DATA": "Data added!",
-  "budget": {
-    "NO_DATA": "There is no data on your budget",
-    "SHOW_DATA": "Here is the data on your budget:",
-    "ABOUT": "Enter data in this format:\n 100.50 VAL or 1 VAL where the amount can be either an integer or a fractional number, and VAL - currency.\n Example of currencies: USD, EUR, ILS, BTC, ETH, USDT, etc. \n Example of input data: 100.50 USD or 100 EUR"
-  },
-  "expenses": {
-    "NO_EXPENSES": "Congratulations, you don't have any expenses for the current period yet!",
-    "EXPENSES_INFO": "Here is the data on your expenses:",
-    "CATEGORIES": "Here is the list of available categories:",
-    "FORMAT": "{categories} Enter data in the format: 1 01-01-2023 200 USD\n Where 1 is the category number\n 01-01-2023 is the format of the date to be entered\n 200(1.324) is the format of the input expenses can be either integer or fractional \n USD is the currency format",
-    "NO_DATA": "No you have data on this currency in your budget. Therefore, no expenses will be paid to {currency}!",
-    "IMPOSSIBLE": "Expenses are more than the amount of your budget!"
+  "WelcomeHTML": "👋 Welcome, <b>{first_name} {last_name}</b>!\n\n🐾 I will help you track important events about your pets.\nYou can create: regular or one-time reminders for each of your pets.\n\n<i>For example: I can remind you that it's time to register for a regular checkup with a veterinarian 👨‍⚕️ or about your pet's birthday 🎂</i>\n\n<b>Let's start:</b>\nGo to the \"<b>My Pets</b>\" section 🐱🐶 and fill in the brief information about your pet",
+  "MainMenu": {
+    "Title": "Main menu:",
+    "MyProfile": "My Profile",
+    "MyPets": "My Pets",
+    "Remainders": "Remainders",
+    "Settings": "Settings"
   }
 }

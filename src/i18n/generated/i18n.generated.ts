@@ -5,73 +5,19 @@
 import { Path } from "nestjs-i18n";
 /* prettier-ignore */
 export type I18nTranslations = {
-    "buttons": {
-        "main_keyboard": {
-            "BUDGET": string;
-            "EXPENSES": string;
-            "CURRENCIES_SUM": string;
-        };
-        "currencies": {
-            "EXCHANGE": string;
-            "EXCHANGE_SUM": string;
-            "CLOSE": string;
-        };
-        "expenses": {
-            "ADD_EXPENSE": string;
-            "SHOW_EXPENSES": string;
-        };
-        "budget": {
-            "ADD_BUDGET": string;
-            "SHOW_BUDGET": string;
-        };
-        "currencies_2": {
-            "GET_QUOTES_ALL": string;
-            "GET_QUOTES": string;
-            "EXIT": string;
-        };
-        "currencies_sum": {
-            "BACK_TO_CURRENCY_CHOOSE": string;
-            "GET_BACK": string;
-            "GET_TOP": string;
-        };
-        "expenses_periods": {
-            "WEEK": string;
-            "TWO_WEEKS": string;
-            "MONTH": string;
-            "THREE_MONTHS": string;
-            "SIX_MONTHS": string;
-            "YEAR": string;
-        };
-    };
     "main": {
-        "WELCOME": string;
-        "HELP": string;
-        "DESCRIPTION": string;
-        "CHOOSE_OPT": string;
-        "CHOOSE_LANG": string;
-        "DEFAULT_CURRENCY": string;
-        "SHOW_COMMANDS": string;
-        "MAIN_CURRENCY": string;
-        "CURRENCIES": string;
-        "NO_INFO": string;
-        "NOT_CORRECT": string;
-        "CAN_CHOOSE": string;
-        "CURRENCY_SUM_ABOUT": string;
-        "YOUR_VALUE": string;
-        "SUMS": string;
-        "ADDED_DATA": string;
-        "budget": {
-            "NO_DATA": string;
-            "SHOW_DATA": string;
-            "ABOUT": string;
+        "WelcomeHTML": string;
+        "MainMenu": {
+            "Title": string;
+            "MyProfile": string;
+            "MyPets": string;
+            "Remainders": string;
+            "Settings": string;
         };
-        "expenses": {
-            "NO_EXPENSES": string;
-            "EXPENSES_INFO": string;
-            "CATEGORIES": string;
-            "FORMAT": string;
-            "NO_DATA": string;
-            "IMPOSSIBLE": string;
+        "Settings": {
+            "Language": string;
+            "ru": string;
+            "en": string;
         };
     };
 };
