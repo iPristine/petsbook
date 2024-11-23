@@ -8,6 +8,7 @@ build:
     - prod
   script:
     - docker compose down
+    - docker compose build
 
 deploy:
   stage: deploy
