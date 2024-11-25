@@ -1,6 +1,6 @@
 import { Ctx, Scene, SceneEnter, Action, InjectBot } from 'nestjs-telegraf';
 import { BotScenes } from '../types';
-import { BotContext } from 'src/bot/interfaces/context.interface';
+import { BotContext } from '@bot/interfaces';
 import { I18nTranslateService } from 'src/i18n/i18n.service';
 import { Telegraf } from 'telegraf';
 const Calendar = require('telegraf-calendar-telegram');

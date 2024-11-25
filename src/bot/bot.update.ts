@@ -32,9 +32,11 @@ export class BotUpdate {
         username: username,
         lang: language_code,
       });
-      ctx.session.data = {};
 
-      ctx.session.data.language = user.lang;
+      ctx.session.data = {
+        language: user.lang,
+        lastBotMessages: [],
+      };
 
       const welcomeMessage = await this.i18nService.t('main.WelcomeHTML', {
         lang: user.lang,

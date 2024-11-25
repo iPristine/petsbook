@@ -1,19 +1,21 @@
 import { Action, Ctx, Scene, SceneEnter } from 'nestjs-telegraf';
-import { Context } from 'telegraf';
 import { BotButtons } from '../bot.buttons';
 import { I18nTranslateService } from '../../i18n/i18n.service';
 import { BotScenes } from './types';
 import { UserService } from 'src/user/user.service';
+import { BaseScene, BotContext } from '@bot/interfaces';
 
 @Scene(BotScenes.MY_PROFILE)
-export class MyProfile {
+export class MyProfile extends BaseScene {
   constructor(
     private i18n: I18nTranslateService,
     private userService: UserService,
-  ) {}
+  ) {
+    super();
+  }
 
   @SceneEnter()
-  async enterMyProfile(@Ctx() ctx: Context) {
+  async enterMyProfile(@Ctx() ctx: BotContext) {
     try {
       const user = await this.userService.findOne(ctx.from.id);
       const message = [
@@ -25,16 +27,15 @@ export class MyProfile {
       ]
         .filter(Boolean)
         .join('\n');
-      await ctx.reply(message, BotButtons.myProfile());
+
+      this.updateBotMessage(ctx, message, BotButtons.myProfile());
     } catch (error) {
       await ctx.reply('Произошла ошибка при получении данных пользователя');
     }
   }
 
   @Action('back')
-  async getMainMenu(@Ctx() ctx: Context) {
-    ctx['session']['language'] = ctx.callbackQuery['data'];
-
-    await ctx['scene'].enter(BotScenes.MAIN_MENU);
+  async getMainMenu(@Ctx() ctx: BotContext) {
+    this.navigate(ctx, BotScenes.MAIN_MENU);
   }
 }

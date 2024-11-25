@@ -3,11 +3,14 @@ import { BotScenes } from '../types';
 import { RemindersService } from '../../../reminders/reminders.service';
 import { ReminderButtons } from './reminder.buttons';
 import { BotContext } from 'src/bot/interfaces/context.interface';
+import { BaseScene } from 'src/bot/interfaces/base.scene';
 
 
 @Scene(BotScenes.REMINDER_DETAILS)
-export class ReminderDetails {
-  constructor(private remindersService: RemindersService) {}
+export class ReminderDetails extends BaseScene {
+  constructor(private remindersService: RemindersService) {
+    super();
+  }
 
   @SceneEnter()
   async enterReminderDetails(@Ctx() ctx: BotContext) {

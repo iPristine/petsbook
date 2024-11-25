@@ -67,6 +67,9 @@ model Reminder {
   id          String    @id @default(cuid())
   title       String
   description String?
+  eventDate   DateTime
+  nextReminderDate DateTime
+
   date        DateTime
   frequency   ReminderFrequency?
   notifyDays  Int?      // 0 = same day, 1 = day before, 7 = week before

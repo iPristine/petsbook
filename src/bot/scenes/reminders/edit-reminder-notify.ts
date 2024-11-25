@@ -4,10 +4,12 @@ import { RemindersService } from '../../../reminders/reminders.service';
 import { ReminderButtons } from './reminder.buttons';
 import { BotContext } from 'src/bot/interfaces/context.interface';
 import { Markup } from 'telegraf';
-
+import { BaseScene } from '@bot/interfaces/base.scene';
 @Scene(BotScenes.EDIT_REMINDER_NOTIFY)
-export class EditReminderNotify {
-  constructor(private remindersService: RemindersService) {}
+export class EditReminderNotify extends BaseScene {
+  constructor(private remindersService: RemindersService) {
+    super();
+  }
 
   @SceneEnter()
   async enterEditNotify(@Ctx() ctx: BotContext) {

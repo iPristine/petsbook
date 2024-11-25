@@ -1,12 +1,7 @@
 import { Markup } from 'telegraf';
 
 export class PetButtons {
-  static myPets() {
-    return Markup.inlineKeyboard([
-      [Markup.button.callback('Add Pet', 'add_pet')],
-      [Markup.button.callback('Back', 'back')],
-    ]);
-  }
+
 
   static petTypes(gender: 'male' | 'female') {
     return Markup.inlineKeyboard([

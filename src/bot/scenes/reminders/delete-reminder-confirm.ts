@@ -3,10 +3,13 @@ import { Markup } from 'telegraf';
 import { BotScenes } from '../types';
 import { RemindersService } from '../../../reminders/reminders.service';
 import { BotContext } from 'src/bot/interfaces/context.interface';
+import { BaseScene } from '@bot/interfaces/base.scene';
 
 @Scene(BotScenes.DELETE_REMINDER_CONFIRM)
-export class DeleteReminderConfirm {
-  constructor(private remindersService: RemindersService) {}
+export class DeleteReminderConfirm extends BaseScene {
+  constructor(private remindersService: RemindersService) {
+    super();
+  }
 
   @SceneEnter()
   async enterDeleteConfirm(@Ctx() ctx: BotContext) {

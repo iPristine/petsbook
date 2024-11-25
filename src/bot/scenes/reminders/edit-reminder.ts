@@ -2,8 +2,9 @@ import { Action, Ctx, Scene, SceneEnter } from 'nestjs-telegraf';
 import { BotScenes } from '../types';
 import { ReminderButtons } from './reminder.buttons';
 import { BotContext } from 'src/bot/interfaces/context.interface';
+import { BaseScene } from '@bot/interfaces/base.scene';
 @Scene(BotScenes.EDIT_REMINDER)
-export class EditReminder {
+export class EditReminder extends BaseScene {
   @SceneEnter()
   async enterEditReminder(@Ctx() ctx: BotContext) {
     await ctx.reply('✏️ Что хотите изменить?', ReminderButtons.editReminder());

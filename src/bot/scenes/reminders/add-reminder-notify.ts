@@ -1,10 +1,11 @@
 import { Action, Ctx, Scene, SceneEnter } from 'nestjs-telegraf';
 import { BotScenes } from '../types';
-import { ReminderButtons } from './reminder.buttons';
 import { BotContext } from 'src/bot/interfaces/context.interface';
 import { Markup } from 'telegraf';
+import { BaseScene } from '@bot/interfaces/base.scene';
+
 @Scene(BotScenes.ADD_REMINDER_NOTIFY)
-export class AddReminderNotify {
+export class AddReminderNotify extends BaseScene {
   @SceneEnter()
   async enterAddReminderNotify(@Ctx() ctx: BotContext) {
     await ctx.reply(

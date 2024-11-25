@@ -5,52 +5,57 @@ import { I18nTranslateService } from '../../i18n/i18n.service';
 import { BotScenes } from './types';
 import { I18nService } from 'nestjs-i18n';
 import { BotContext, BotContext as Context } from '../interfaces/context.interface';
+import { BaseScene } from '../interfaces/base.scene';
 
 const i18nBase = 'main.MainMenu.'
 
 @Scene(BotScenes.MAIN_MENU)
-export class MainMenu {
+export class MainMenu extends BaseScene {
 
   constructor(
     private i18n: I18nTranslateService,
   ) {
+    super()
   }
 
   @SceneEnter()
   async enterMainMenu(@Ctx() ctx: BotContext) {
 
     const message = await this.i18n.t({key: i18nBase+'Title', ctx});
+    const buttons = await this.mainMenuButtons(ctx);
 
-    await ctx.reply(message, await this.mainMenuButtons(ctx));
+    const updated = await this.updateBotMessage(ctx, message, buttons);
+
+
+    if (!updated) {
+      const sentMessage = await ctx.reply(message, buttons);
+      await this.saveBotMessage(ctx, sentMessage);
+    }
   }
 
 
   @Action('my-profile')
   async getMyProfile(@Ctx() ctx: Context) {
 
-    await ctx.scene.leave();
-    await ctx.scene.enter(BotScenes.MY_PROFILE);
+    await this.navigate(ctx, BotScenes.MY_PROFILE);
   }
 
   @Action('my-pets')
   async getMyPets(@Ctx() ctx: Context) {
 
-    await ctx.scene.leave();
-    await ctx.scene.enter(BotScenes.MY_PETS);
+    await this.navigate(ctx, BotScenes.MY_PETS);
   }
 
   @Action('remainders')
   async getRemainders(@Ctx() ctx: Context) {
 
-    await ctx.scene.leave();
-    await ctx.scene.enter(BotScenes.REMINDERS_LIST);
+    await this.navigate(ctx, BotScenes.REMINDERS_LIST);
   }
 
   @Action('settings')
   async getSettings(@Ctx() ctx: BotContext) {
 
-    await ctx.scene.leave();
-    await ctx.scene.enter(BotScenes.SETTINGS);
+    await this.navigate(ctx, BotScenes.SETTINGS);
   }
 
 
@@ -67,15 +72,5 @@ export class MainMenu {
     });
   }
 
-  @SceneLeave()
-  async leaveMainMenu(@Ctx() ctx: BotContext) {
-    if (ctx.session.data.lastBotMessages?.length) {
-      await Promise.all(
-        ctx.session.data.lastBotMessages.map(messageId =>
-          ctx.deleteMessage(messageId).catch(() => {})
-        )
-      );
-      ctx.session.data.lastBotMessages = [];
-    }
-  }
+
 }

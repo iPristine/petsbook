@@ -1,20 +1,23 @@
 import { Action, Ctx, Scene, SceneEnter, On } from 'nestjs-telegraf';
-import { Context } from 'telegraf';
 import { BotScenes } from '../types';
 import { I18nTranslateService } from '../../../i18n/i18n.service';
 import { PetsService } from '../../../pets/pets.service';
 import { PetButtons } from './pet.buttons';
+import { BaseScene } from '@bot/interfaces/base.scene';
+import { BotContext } from '@bot/interfaces/context.interface';
 
 @Scene(BotScenes.PET_EDIT)
-export class PetEdit {
+export class PetEdit extends BaseScene {
   constructor(
     private i18n: I18nTranslateService,
     private petsService: PetsService,
-  ) {}
+  ) {
+    super();
+  }
 
   @SceneEnter()
-  async enterPetEdit(@Ctx() ctx: Context) {
-    const petId = ctx['session']['currentPetId'];
+  async enterPetEdit(@Ctx() ctx: BotContext) {
+    const petId = ctx.session['currentPetId'];
     const pet = await this.petsService.getPetById(petId);
 
     if (!pet) {
@@ -35,25 +38,25 @@ export class PetEdit {
   }
 
   @Action('edit_name')
-  async editName(@Ctx() ctx: Context) {
-    ctx['session']['editField'] = 'name';
+  async editName(@Ctx() ctx: BotContext) {
+    ctx.session['editField'] = 'name';
     await ctx.reply('Введите новое имя питомца:');
   }
 
   @Action('edit_age')
-  async editAge(@Ctx() ctx: Context) {
-    ctx['session']['editField'] = 'age';
+  async editAge(@Ctx() ctx: BotContext) {
+    ctx.session['editField'] = 'age';
     await ctx.reply('Введите новый возраст питомца:');
   }
 
   @On('text')
-  async onText(@Ctx() ctx: Context) {
-    const field = ctx['session']['editField'];
-    const petId = ctx['session']['currentPetId'];
+  async onText(@Ctx() ctx: BotContext) {
+    const field = ctx.session['editField'];
+    const petId = ctx.session['currentPetId'];
     const text = ctx.message['text'];
 
     if (!field || !petId) {
-      await ctx['scene'].enter(BotScenes.PET_DETAILS);
+      this.navigate(ctx, BotScenes.PET_DETAILS);
       return;
     }
 
@@ -80,11 +83,11 @@ export class PetEdit {
       await ctx.reply('❌ Произошла ошибка при обновлении данных');
     }
 
-    await ctx['scene'].enter(BotScenes.PET_DETAILS);
+    this.navigate(ctx, BotScenes.PET_DETAILS);
   }
 
   @Action('back')
-  async back(@Ctx() ctx: Context) {
-    await ctx['scene'].enter(BotScenes.PET_DETAILS);
+  async back(@Ctx() ctx: BotContext) {
+    this.navigate(ctx, BotScenes.PET_DETAILS);
   }
 }

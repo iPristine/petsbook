@@ -21,7 +21,7 @@ export class NotificationsService {
 
 
     const reminders = await this.remindersService.findRemindersInTimeRange(
-      now,
+      new Date(0),
       nextDay,
     );
 

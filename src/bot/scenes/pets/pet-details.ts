@@ -5,14 +5,17 @@ import { I18nTranslateService } from '../../../i18n/i18n.service';
 import { PetsService } from '../../../pets/pets.service';
 import { UserService } from '../../../user/user.service';
 import { PetButtons } from './pet.buttons';
+import { BaseScene } from 'src/bot/interfaces/base.scene';
 
 @Scene(BotScenes.PET_DETAILS)
-export class PetDetails {
+export class PetDetails extends BaseScene {
   constructor(
     private i18n: I18nTranslateService,
     private petsService: PetsService,
     private userService: UserService,
-  ) {}
+  ) {
+    super();
+  }
 
   @SceneEnter()
   async enterPetDetails(@Ctx() ctx: Context) {

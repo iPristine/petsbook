@@ -5,6 +5,7 @@ import { ReminderButtons } from './reminder.buttons';
 import { BotContext } from 'src/bot/interfaces/context.interface';
 import { ReminderFrequency } from '@prisma/client';
 import { Markup } from 'telegraf';
+import { BaseScene } from '@bot/interfaces/base.scene';
 
 const frequencies = [
   ReminderFrequency.ONCE,
@@ -15,8 +16,10 @@ const frequencies = [
 ];
 
 @Scene(BotScenes.EDIT_REMINDER_FREQUENCY)
-export class EditReminderFrequency {
-  constructor(private remindersService: RemindersService) {}
+export class EditReminderFrequency extends BaseScene {
+  constructor(private remindersService: RemindersService) {
+    super();
+  }
 
   @SceneEnter()
   async enterEditFrequency(@Ctx() ctx: BotContext) {

@@ -1,29 +1,37 @@
 import { Action, Ctx, Scene, SceneEnter } from 'nestjs-telegraf';
-import { BotButtons } from '../bot.buttons';
-import { I18nTranslateService } from '../../i18n/i18n.service';
+import { I18nTranslateService } from '../../../i18n/i18n.service';
 
 const LANG_TYPES = ['ru', 'en'];
-import { BotScenes } from './types';
-import { BotContext } from '../interfaces/context.interface';
+import { BotScenes } from '../types';
+import { BotContext } from '../../interfaces/context.interface';
 import { UserService } from 'src/user/user.service';
 import { Markup } from 'telegraf';
 import { LanguageOption } from 'src/common/types';
+import { BaseScene } from 'src/bot/interfaces/base.scene';
 
 const i18nBase = 'main.Settings.';
 
 @Scene(BotScenes.LANGUAGE)
-export class BotLanguage {
+export class BotLanguage extends BaseScene {
   constructor(
     private i18n: I18nTranslateService,
     private userService: UserService  
   ) {
-    this.i18n = i18n;
+    super();
   }
 
 
   @SceneEnter()
   async enterLanguage(@Ctx() ctx: BotContext) {
-    await ctx.reply(await this.i18n.t({key: 'main.CHOOSE_LANG', ctx}),await this.languageButtons(ctx));
+    const message = await this.i18n.t({key: i18nBase+'ChooseLang', ctx});
+    const buttons = await this.languageButtons(ctx);
+
+    const updated = await this.updateBotMessage(ctx, message, buttons);
+
+    if (!updated) {
+      const sentMessage = await ctx.reply(message, buttons);
+      await this.saveBotMessage(ctx, sentMessage);
+    }
   }
 
   @Action([...LANG_TYPES])
@@ -31,10 +39,10 @@ export class BotLanguage {
     await ctx.deleteMessage();
     ctx.session.data.language = ctx.callbackQuery['data'];
     const language = ctx.session.data.language;
-    await ctx.reply(await this.i18n.t({key: 'main.CHOOSE_LANG', ctx}));
+    await ctx.reply(await this.i18n.t({key: i18nBase+'ChoosedLang', ctx, options: {args: {language}}}));
     await this.userService.updateLanguage(ctx.from.id, language);
-    await ctx.scene.leave();
-    await ctx.scene.enter(BotScenes.MAIN_MENU);
+
+    await this.navigate(ctx, BotScenes.SETTINGS);
   }
 
   async languageButtons(@Ctx() ctx: BotContext) {

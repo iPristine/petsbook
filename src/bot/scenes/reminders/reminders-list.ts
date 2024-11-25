@@ -4,12 +4,16 @@ import { BotScenes } from '../types';
 import { RemindersService } from '../../../reminders/reminders.service';
 import { UserService } from '../../../user/user.service';
 import { BotContext } from 'src/bot/interfaces/context.interface';
+import { BaseScene } from 'src/bot/interfaces/base.scene';
+
 @Scene(BotScenes.REMINDERS_LIST)
-export class RemindersList {
+export class RemindersList extends BaseScene {
   constructor(
     private remindersService: RemindersService,
     private userService: UserService,
-  ) {}
+  ) {
+    super();
+  }
 
   @SceneEnter()
   async enterRemindersList(@Ctx() ctx: BotContext) {
@@ -41,7 +45,7 @@ export class RemindersList {
       ]);
       buttons.push([Markup.button.callback('◀️ Назад', 'back')]);
 
-      await ctx.reply('Ваши напоминания:', Markup.inlineKeyboard(buttons));
+      this.updateBotMessage(ctx, 'Ваши напоминания:', Markup.inlineKeyboard(buttons));
     }
   }
 
@@ -49,17 +53,17 @@ export class RemindersList {
   async showReminderDetails(@Ctx() ctx: BotContext) {
     const reminderId = ctx.callbackQuery['data'].split('_')[2];
     ctx.session.data.currentReminderId = reminderId;
-    await ctx.scene.enter(BotScenes.REMINDER_DETAILS);
+    this.navigate(ctx, BotScenes.REMINDER_DETAILS);
   }
 
   @Action('add_reminder')
   async addReminder(@Ctx() ctx: BotContext) {
     await ctx.answerCbQuery();
-    await ctx.scene.enter(BotScenes.ADD_REMINDER_PETS);
+    this.navigate(ctx, BotScenes.ADD_REMINDER_PETS);
   }
 
   @Action('back')
   async back(@Ctx() ctx: BotContext) {
-    await ctx.scene.enter(BotScenes.MAIN_MENU);
+    this.navigate(ctx, BotScenes.MAIN_MENU);
   }
 }

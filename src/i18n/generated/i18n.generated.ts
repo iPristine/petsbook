@@ -15,7 +15,10 @@ export type I18nTranslations = {
             "Settings": string;
         };
         "Settings": {
+            "Title": string;
+            "ChooseLang": string;
             "Language": string;
+            "ChoosedLang": string;
             "ru": string;
             "en": string;
         };

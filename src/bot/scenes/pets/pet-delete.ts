@@ -5,14 +5,17 @@ import { I18nTranslateService } from '../../../i18n/i18n.service';
 import { PetsService } from '../../../pets/pets.service';
 import { UserService } from '../../../user/user.service';
 import { PetButtons } from './pet.buttons';
+import { BaseScene } from '@bot/interfaces/base.scene';
 
 @Scene(BotScenes.PET_DELETE)
-export class PetDelete {
+export class PetDelete extends BaseScene {
   constructor(
     private i18n: I18nTranslateService,
     private petsService: PetsService,
     private userService: UserService,
-  ) {}
+  ) {
+    super();
+  }
 
   @SceneEnter()
   async enterPetDelete(@Ctx() ctx: Context) {

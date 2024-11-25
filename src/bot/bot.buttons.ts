@@ -41,7 +41,10 @@ export class BotButtons {
     return Markup.inlineKeyboard([[Markup.button.callback('Back', 'back')]]);
   }
 
-  static settings() {
-    return Markup.inlineKeyboard([[Markup.button.callback('Language', 'language')],[Markup.button.callback('Back', 'back')]]);
+  static backButton() {
+    return Markup.button.callback('◀️ Назад', 'back')
   }
+
+
+
 }

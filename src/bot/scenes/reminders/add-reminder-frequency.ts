@@ -1,10 +1,9 @@
 import { Action, Ctx, Scene, SceneEnter } from 'nestjs-telegraf';
 import { BotScenes } from '../types';
-import { ReminderButtons } from './reminder.buttons';
 import { BotContext } from 'src/bot/interfaces/context.interface';
 import { Markup } from 'telegraf';
 import { ReminderFrequency } from '@prisma/client';
-
+import { BaseScene } from '@bot/interfaces/base.scene';
 
 const frequencies = [
   ReminderFrequency.ONCE,
@@ -14,7 +13,7 @@ const frequencies = [
   ReminderFrequency.YEARLY,
 ];
 @Scene(BotScenes.ADD_REMINDER_FREQUENCY)
-export class AddReminderFrequency {
+export class AddReminderFrequency extends BaseScene {
   @SceneEnter()
   async enterAddReminderFrequency(@Ctx() ctx: BotContext) {
     await ctx.reply(

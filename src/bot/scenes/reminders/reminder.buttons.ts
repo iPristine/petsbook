@@ -1,4 +1,3 @@
-import { ReminderFrequency } from '@prisma/client';
 import { Markup } from 'telegraf';
 
 export class ReminderButtons {

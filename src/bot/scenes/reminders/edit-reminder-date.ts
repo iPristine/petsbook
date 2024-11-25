@@ -2,9 +2,13 @@ import { Ctx, Scene, SceneEnter, On } from 'nestjs-telegraf';
 import { BotScenes } from '../types';
 import { RemindersService } from '../../../reminders/reminders.service';
 import { BotContext } from 'src/bot/interfaces/context.interface';
+import { BaseScene } from '@bot/interfaces/base.scene';
+
 @Scene(BotScenes.EDIT_REMINDER_DATE)
-export class EditReminderDate {
-  constructor(private remindersService: RemindersService) {}
+export class EditReminderDate extends BaseScene {
+  constructor(private remindersService: RemindersService) {
+    super();
+  }
 
   @SceneEnter()
   async enterEditDate(@Ctx() ctx: BotContext) {
