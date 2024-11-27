@@ -7,6 +7,9 @@ services:
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - ADMIN_TELEGRAM_ID=${ADMIN_TELEGRAM_ID}
+      - IS_DEV=${IS_DEV}
+      - SEND_ONLY_TO_ADMIN=${SEND_ONLY_TO_ADMIN}
       - NODE_ENV=production
     entrypoint: sh ./init.sh
     restart: always
