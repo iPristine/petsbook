@@ -29,37 +29,42 @@ export class BotService {
   async sendMessageToAdmin(message: string, extra?: any) {
     const adminTelegramId = process.env.ADMIN_TELEGRAM_ID;
     const adminMessage = `ADMIN MESSAGE:\n'${message}'`;
-    
+
     return await this.sendMessage(adminTelegramId, adminMessage, extra);
   }
 
   async sendPost(user: User, post: Post) {
-    if(process.env.SEND_ONLY_TO_ADMIN && user.telegramId !== process.env.ADMIN_TELEGRAM_ID) {
+    if (
+      process.env.SEND_ONLY_TO_ADMIN &&
+      user.telegramId !== process.env.ADMIN_TELEGRAM_ID
+    ) {
       return;
     }
-    
-    const buttons = Object.values(ReactionType).map(type => 
+
+    const buttons = Object.values(ReactionType).map((type) =>
       Markup.button.callback(
         `${getIconFromReactionType(type)}`,
-        `react_${post.id}_${type}`
-      )
+        `react_${post.id}_${type}`,
+      ),
     );
 
-
-    const mainMenuButtonTitle = await this.i18nService.t('main.MainMenuButton', {
+    const mainMenuButtonTitle = await this.i18nService.t(
+      'main.MainMenuButton',
+      {
         lang: user.lang,
-      });
+      },
+    );
 
     buttons.push(Markup.button.callback(mainMenuButtonTitle, `main_menu`));
-
 
     const keyboard = Markup.inlineKeyboard(buttons, { columns: 2 });
 
     try {
       await this.sendMessage(
         user.telegramId,
-        post[`content${user.lang === 'ru' ? 'Ru' : 'En'}`] || post.contentDefault,
-        keyboard
+        post[`content${user.lang === 'ru' ? 'Ru' : 'En'}`] ||
+          post.contentDefault,
+        keyboard,
       );
 
       await this.logger.logUserAction({
@@ -77,18 +82,18 @@ export class BotService {
   }
 
   async updatePostReactions(
-    chatId: string, 
-    messageId: number, 
-    postId: string, 
-    reactions: PostReaction[]
+    chatId: string,
+    messageId: number,
+    postId: string,
+    reactions: PostReaction[],
   ) {
     const reactionCounts = this.countReactions(reactions);
-    
-    const buttons = Object.values(ReactionType).map(type => 
+
+    const buttons = Object.values(ReactionType).map((type) =>
       Markup.button.callback(
         `${type} ${reactionCounts[type] || 0}`,
-        `react_${postId}_${type}`
-      )
+        `react_${postId}_${type}`,
+      ),
     );
 
     const keyboard = Markup.inlineKeyboard(buttons, { columns: 2 });
@@ -98,7 +103,7 @@ export class BotService {
         chatId,
         messageId,
         undefined,
-        keyboard.reply_markup
+        keyboard.reply_markup,
       );
     } catch (error) {
       await this.logger.logUserAction({
@@ -110,9 +115,12 @@ export class BotService {
   }
 
   private countReactions(reactions: PostReaction[]) {
-    return reactions.reduce((acc, reaction) => {
-      acc[reaction.type] = (acc[reaction.type] || 0) + 1;
-      return acc;
-    }, {} as Record<ReactionType, number>);
+    return reactions.reduce(
+      (acc, reaction) => {
+        acc[reaction.type] = (acc[reaction.type] || 0) + 1;
+        return acc;
+      },
+      {} as Record<ReactionType, number>,
+    );
   }
-} 
+}

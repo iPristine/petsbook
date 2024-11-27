@@ -3,7 +3,6 @@ import { BotUpdate } from './bot.update';
 import * as LocalSession from 'telegraf-session-local';
 import { PrismaService } from '../prisma.service';
 
-
 import { TelegrafModule } from 'nestjs-telegraf';
 import { I18nTranslateModule } from 'src/i18n/i18n.module';
 import { I18nTranslateService } from 'src/i18n/i18n.service';
@@ -43,7 +42,7 @@ import { BotService } from './bot.service';
 import { LoggerService } from 'src/logger/logger.service';
 import { LogViewerService } from 'src/logger/log-viewer.service';
 import { PostsService } from 'src/posts/posts.service';
-
+import { SendFeedback } from './scenes/feedback/send-feedback';
 const sessions = new LocalSession({ database: 'session.json' });
 
 @Module({
@@ -99,7 +98,7 @@ const sessions = new LocalSession({ database: 'session.json' });
     EditReminderFrequency,
     EditReminderNotify,
     DeleteReminderConfirm,
-
+    SendFeedback,
   ],
 })
 export class BotModule {}

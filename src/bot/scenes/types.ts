@@ -35,4 +35,6 @@ export enum BotScenes {
   EDIT_REMINDER_FREQUENCY = 'edit-reminder-frequency',
   EDIT_REMINDER_NOTIFY = 'edit-reminder-notify',
   DELETE_REMINDER_CONFIRM = 'delete-reminder-confirm',
+
+  SEND_FEEDBACK = 'send-feedback',
 }
