@@ -2,8 +2,7 @@ import { Module } from '@nestjs/common';
 import { BotUpdate } from './bot.update';
 import * as LocalSession from 'telegraf-session-local';
 import { PrismaService } from '../prisma.service';
-import { LoggerService } from '../services/logger.service';
-import { LogViewerService } from '../services/log-viewer.service';
+
 
 import { TelegrafModule } from 'nestjs-telegraf';
 import { I18nTranslateModule } from 'src/i18n/i18n.module';
@@ -40,6 +39,10 @@ import { EditReminderDate } from './scenes/reminders/edit-reminder-date';
 import { EditReminderFrequency } from './scenes/reminders/edit-reminder-frequency';
 import { EditReminderNotify } from './scenes/reminders/edit-reminder-notify';
 import { DeleteReminderConfirm } from './scenes/reminders/delete-reminder-confirm';
+import { BotService } from './bot.service';
+import { LoggerService } from 'src/logger/logger.service';
+import { LogViewerService } from 'src/logger/log-viewer.service';
+import { PostsService } from 'src/posts/posts.service';
 
 const sessions = new LocalSession({ database: 'session.json' });
 
@@ -53,11 +56,14 @@ const sessions = new LocalSession({ database: 'session.json' });
     }),
     I18nTranslateModule,
   ],
+  exports: [BotService],
   providers: [
-    BotUpdate,
-    PrismaService,
+    PostsService,
     LoggerService,
     LogViewerService,
+    BotService,
+    BotUpdate,
+    PrismaService,
     I18nTranslateService,
     BotLanguage,
     MainMenu,
@@ -93,6 +99,7 @@ const sessions = new LocalSession({ database: 'session.json' });
     EditReminderFrequency,
     EditReminderNotify,
     DeleteReminderConfirm,
+
   ],
 })
 export class BotModule {}

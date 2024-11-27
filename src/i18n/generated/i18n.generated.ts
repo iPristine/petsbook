@@ -14,6 +14,7 @@ export type I18nTranslations = {
             "Remainders": string;
             "Settings": string;
         };
+        "MainMenuButton": string;
         "Settings": {
             "Title": string;
             "ChooseLang": string;

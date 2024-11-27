@@ -1,18 +1,51 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { Context, Telegraf } from 'telegraf';
+import { Context, Markup, Telegraf } from 'telegraf';
 import { InjectBot } from 'nestjs-telegraf';
 import { RemindersService } from '../reminders/reminders.service';
-import { Pet, Reminder, ReminderFrequency, User } from '@prisma/client';
+import { Pet, ReactionType, Reminder, ReminderFrequency, User } from '@prisma/client';
+import { PostsService } from 'src/posts/posts.service';
+import { UserService } from 'src/user/user.service';
+import { BotService } from 'src/bot/bot.service';
 
 @Injectable()
 export class NotificationsService {
+
+  private readonly reactions = [ReactionType.LIKE, ReactionType.DISLIKE];
+
   constructor(
     private remindersService: RemindersService,
+    private userService: UserService,
+    private postsService: PostsService,
+    private botService: BotService,
     @InjectBot() private bot: Telegraf<Context>,
   ) {}
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(process.env.IS_DEV === 'true' ? CronExpression.EVERY_MINUTE : CronExpression.EVERY_WEEK)
+  async sendWeeklyPost() {
+    try {
+      const post = await this.postsService.getNextUnsendPost();
+
+      if (!post) {
+        await this.botService.sendMessageToAdmin('No unsent posts found');
+        console.log('No unsent posts found');
+        return;
+      }
+
+      const users = await this.userService.getAllUsers();
+      
+      for (const user of users) {
+        await this.botService.sendPost(user, post);
+      }
+      await this.postsService.markPostAsSent(post.id);
+
+    } catch (error) {
+      console.error('Error sending weekly post:', error);
+    }
+  }
+
+
+  @Cron(CronExpression.EVERY_HOUR)
   async checkReminders() {
     await this.checkPreNotifications();
 

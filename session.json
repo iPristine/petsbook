@@ -25,7 +25,8 @@
         "data": {
           "language": "ru",
           "lastBotMessages": [
-            898
+            898,
+            1047
           ]
         }
       }
@@ -37,7 +38,19 @@
           "current": "main-menu",
           "state": {}
         },
-        "language": "back"
+        "language": "back",
+        "data": {
+          "language": "en",
+          "lastBotMessages": [
+            994
+          ]
+        },
+        "petName": "Pipka",
+        "petGender": "male",
+        "petType": "cat",
+        "petAge": 0,
+        "currentPetId": "cm3xg05wb000n2h46hg6jpfwj",
+        "editField": "age"
       }
     },
     {

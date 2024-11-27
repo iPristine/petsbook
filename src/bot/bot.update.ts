@@ -1,13 +1,14 @@
-import { Update, Start, Ctx, Command, InjectBot } from 'nestjs-telegraf';
+import { Update, Start, Ctx, Command, InjectBot, Action } from 'nestjs-telegraf';
 import { Context, Telegraf } from 'telegraf';
-import { LoggerService } from '../services/logger.service';
-import { LogViewerService } from '../services/log-viewer.service';
+import { LoggerService } from '../logger/logger.service';
+import { LogViewerService } from '../logger/log-viewer.service';
 import { I18nTranslateService } from 'src/i18n/i18n.service';
 import { BotButtons } from './bot.buttons';
 import { BotScenes } from './scenes/types';
 import { UserService } from 'src/user/user.service';
 import { I18nService } from 'nestjs-i18n';
 import { BotContext } from './interfaces/context.interface';
+import { PostsService } from 'src/posts/posts.service';
 
 @Update()
 export class BotUpdate {
@@ -17,6 +18,7 @@ export class BotUpdate {
     private i18n: I18nTranslateService,
     private i18nService: I18nService,
     private userService: UserService,
+    private postsService: PostsService,
     @InjectBot() private bot: Telegraf<Context>,
   ) {}
 
@@ -68,32 +70,12 @@ export class BotUpdate {
     }
   }
 
-  @Command('lang')
-  async getBotLanguage(@Ctx() ctx: BotContext) {
-    await ctx.deleteMessage();
-    await ctx.scene.enter(BotScenes.LANGUAGE);
-    await ctx.reply(
-      await this.i18n.t({key: 'main.CHOOSE_LANG', ctx}),
-
-    );
-
-    await ctx.reply(
-      await this.i18n.t({key: 'main.CHOOSE_LANG', ctx}),
-      BotButtons.chooseLanguage(),
-    );
-  }
-
   @Command('main')
   async getMainMenu(@Ctx() ctx: BotContext) {
     await ctx.deleteMessage();
     await ctx.scene.enter(BotScenes.MAIN_MENU);
   }
 
-  @Command('my-profile')
-  async getMyProfile(@Ctx() ctx: BotContext) {
-    await ctx.deleteMessage();
-    await ctx.scene.enter(BotScenes.MAIN_MENU);
-  }
 
   @Command('logs')
   async viewLogs(@Ctx() ctx: BotContext) {
@@ -139,35 +121,23 @@ export class BotUpdate {
     }
   }
 
-  @Command('notify')
-  async sendNotification(@Ctx() ctx: BotContext) {
-    try {
-      const user = await this.userService.findOne(ctx.from.id);
+  @Action(/^react_(.+)_(.+)$/)
+async handleReaction(@Ctx() ctx: BotContext) {
+  const [postId, reaction] = ctx.callbackQuery['data'].split('_').slice(1);
+  console.log('handleReaction',postId, reaction, ctx.from.id);
+  const user = await this.userService.findOne(ctx.from.id);
 
-      const message = [
-        '🔔 Тестовое уведомление',
-        `👤 Отправлено пользователю: ${user.firstName}`,
-        '📝 Это проверка системы уведомлений',
-        '⏰ Время отправки: ' + new Date().toLocaleString('ru'),
-      ].join('\n');
+  try {
+    await this.postsService.addReaction(postId, user.id, reaction);
 
-      await this.bot.telegram.sendMessage(user.telegramId, message);
+  } catch (error) {
+    await ctx.answerCbQuery('Произошла ошибка при обновлении реакции');
+  }
+}
 
-      await this.logger.logUserAction({
-        telegramId: user.telegramId,
-        action: 'TEST_NOTIFICATION',
-        details: 'Test notification sent successfully',
-      });
-
-      return '✅ Тестовое уведомление отправлено';
-    } catch (error) {
-      await this.logger.logUserAction({
-        telegramId: ctx.from.id.toString(),
-        action: 'TEST_NOTIFICATION',
-        error: error.message,
-      });
-
-      return '❌ Ошибка при отправке тестового уведомления';
-    }
+  @Action(/^main_menu$/)
+  async mainMenu(@Ctx() ctx: BotContext) {
+    
+    await ctx.scene.enter(BotScenes.MAIN_MENU);
   }
 }

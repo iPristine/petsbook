@@ -26,6 +26,8 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  postReactions PostReaction[]
 }
 
 model Pet {
@@ -67,8 +69,8 @@ model Reminder {
   id          String    @id @default(cuid())
   title       String
   description String?
-  eventDate   DateTime
-  nextReminderDate DateTime
+  eventDate   DateTime?
+  nextReminderDate DateTime?
 
   date        DateTime
   frequency   ReminderFrequency?
@@ -101,6 +103,37 @@ model PetReminder {
   updatedAt   DateTime  @updatedAt
 
   @@unique([reminderId, petId])
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  contentDefault   String
+  contentRu   String?
+  contentEn   String?
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isSent    Boolean  @default(false)
+  sentAt    DateTime?
+  reactions PostReaction[]
+}
+
+enum ReactionType {
+  LIKE // 👍
+  DISLIKE // 👎
+}
+
+model PostReaction {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  type      ReactionType
+  createdAt DateTime @default(now())
+  
+  post      Post     @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([postId, userId])
 }
 
 
