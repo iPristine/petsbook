@@ -1,9 +1,15 @@
-import { Update, Start, Ctx, Command, InjectBot, Action } from 'nestjs-telegraf';
+import {
+  Update,
+  Start,
+  Ctx,
+  Command,
+  InjectBot,
+  Action,
+} from 'nestjs-telegraf';
 import { Context, Telegraf } from 'telegraf';
 import { LoggerService } from '../logger/logger.service';
 import { LogViewerService } from '../logger/log-viewer.service';
 import { I18nTranslateService } from 'src/i18n/i18n.service';
-import { BotButtons } from './bot.buttons';
 import { BotScenes } from './scenes/types';
 import { UserService } from 'src/user/user.service';
 import { I18nService } from 'nestjs-i18n';
@@ -21,7 +27,6 @@ export class BotUpdate {
     private postsService: PostsService,
     @InjectBot() private bot: Telegraf<Context>,
   ) {}
-
 
   @Start()
   async startCommand(@Ctx() ctx: BotContext) {
@@ -57,7 +62,6 @@ export class BotUpdate {
         action: 'START_COMMAND',
         details: `User registered/updated: ${first_name} (${username || 'no username'})`,
       });
-
     } catch (error) {
       await this.logger.logUserAction({
         telegramId: id.toString(),
@@ -65,7 +69,6 @@ export class BotUpdate {
         error: error.message,
       });
 
-    
       return 'ERRORS.REGISTRATION';
     }
   }
@@ -75,7 +78,6 @@ export class BotUpdate {
     await ctx.deleteMessage();
     await ctx.scene.enter(BotScenes.MAIN_MENU);
   }
-
 
   @Command('logs')
   async viewLogs(@Ctx() ctx: BotContext) {
@@ -122,22 +124,20 @@ export class BotUpdate {
   }
 
   @Action(/^react_(.+)_(.+)$/)
-async handleReaction(@Ctx() ctx: BotContext) {
-  const [postId, reaction] = ctx.callbackQuery['data'].split('_').slice(1);
-  console.log('handleReaction',postId, reaction, ctx.from.id);
-  const user = await this.userService.findOne(ctx.from.id);
+  async handleReaction(@Ctx() ctx: BotContext) {
+    const [postId, reaction] = ctx.callbackQuery['data'].split('_').slice(1);
+    console.log('handleReaction', postId, reaction, ctx.from.id);
+    const user = await this.userService.findOne(ctx.from.id);
 
-  try {
-    await this.postsService.addReaction(postId, user.id, reaction);
-
-  } catch (error) {
-    await ctx.answerCbQuery('Произошла ошибка при обновлении реакции');
+    try {
+      await this.postsService.addReaction(postId, user.id, reaction);
+    } catch (error) {
+      await ctx.answerCbQuery('Произошла ошибка при обновлении реакции');
+    }
   }
-}
 
   @Action(/^main_menu$/)
   async mainMenu(@Ctx() ctx: BotContext) {
-    
     await ctx.scene.enter(BotScenes.MAIN_MENU);
   }
 }

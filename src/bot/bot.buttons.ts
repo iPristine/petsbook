@@ -3,10 +3,7 @@ import { ButtonsLocalNames, I18nTranslateService } from '../i18n/i18n.service';
 import { LanguageOption } from 'src/common/types';
 
 export class BotButtons {
-  constructor(
-    private i18n: I18nTranslateService,
-  ) {}
-
+  constructor(private i18n: I18nTranslateService) {}
 
   static chooseLanguage() {
     return Markup.inlineKeyboard([
@@ -16,18 +13,17 @@ export class BotButtons {
   }
 
   static mainMenu() {
-    return Markup.inlineKeyboard([
-      Markup.button.callback('My Profile', 'my-profile'),
-      Markup.button.callback('My Pets', 'my-pets'),
-      Markup.button.callback('Remainders', 'remainders'),
-      Markup.button.callback('Settings', 'settings'),
-    ], {
-      columns: 1,
-    });
-  }
-
-  static myProfile() {
-    return Markup.inlineKeyboard([[Markup.button.callback('Back', 'back')]]);
+    return Markup.inlineKeyboard(
+      [
+        Markup.button.callback('My Profile', 'my-profile'),
+        Markup.button.callback('My Pets', 'my-pets'),
+        Markup.button.callback('Remainders', 'remainders'),
+        Markup.button.callback('Settings', 'settings'),
+      ],
+      {
+        columns: 1,
+      },
+    );
   }
 
   static myPets() {
@@ -42,9 +38,6 @@ export class BotButtons {
   }
 
   static backButton() {
-    return Markup.button.callback('◀️ Назад', 'back')
+    return Markup.button.callback('◀️ Назад', 'back');
   }
-
-
-
 }
