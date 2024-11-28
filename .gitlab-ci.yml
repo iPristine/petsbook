@@ -19,6 +19,6 @@ deploy:
   tags:
     - prod
   script:
-    - docker compose up 
+    - docker compose up -d
   only:
     - main
