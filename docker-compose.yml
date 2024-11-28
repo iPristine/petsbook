@@ -10,12 +10,10 @@ services:
       - ADMIN_TELEGRAM_ID=${ADMIN_TELEGRAM_ID}
       - IS_DEV=${IS_DEV}
       - SEND_ONLY_TO_ADMIN=${SEND_ONLY_TO_ADMIN}
-
       - GITHUB_TOKEN=${GITHUB_TOKEN}
       - GITHUB_OWNER=${GITHUB_OWNER}
       - GITHUB_REPO=${GITHUB_REPO}
       - NODE_ENV=production
-    entrypoint: sh ./init.sh
     restart: always
     volumes:
       - .:/app
