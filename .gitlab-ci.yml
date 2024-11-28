@@ -17,4 +17,4 @@ deploy:
   script:
     - docker compose up 
   only:
-    - dev
+    - main
