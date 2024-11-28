@@ -11,4 +11,7 @@ COPY . .
 
 RUN npm run build
 
+COPY init.sh .
+RUN chmod +x init.sh
+
 EXPOSE 3000
