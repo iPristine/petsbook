@@ -4,6 +4,8 @@ stages:
 
 build:
   stage: build
+  environment:
+    name: prod
   tags:
     - prod
   script:
@@ -12,6 +14,8 @@ build:
 
 deploy:
   stage: deploy
+  environment:
+    name: prod
   tags:
     - prod
   script:
